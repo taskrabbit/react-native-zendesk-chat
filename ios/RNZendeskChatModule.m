@@ -32,6 +32,7 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
   [self setVisitorInfo:options];
 
   dispatch_sync(dispatch_get_main_queue(), ^{
+    [[ZDCChat instance].session trackEvent:@"Chat button pressed: Starting Chat"];
     [ZDCChat startChat:^(ZDCSessionConfig *config) {
       config.preChatDataRequirements.name       = ZDCPreChatDataRequired;
       config.preChatDataRequirements.email      = ZDCPreChatDataRequired;
