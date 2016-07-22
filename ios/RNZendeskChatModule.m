@@ -32,7 +32,7 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
   [self setVisitorInfo:options];
 
   dispatch_sync(dispatch_get_main_queue(), ^{
-    [ZDCChat startChat:^(ZDCSessionConfig *config) {
+    [ZDCChat startChat:^(ZDCConfig *config) {
       config.preChatDataRequirements.name       = ZDCPreChatDataRequired;
       config.preChatDataRequirements.email      = ZDCPreChatDataRequired;
       config.preChatDataRequirements.phone      = ZDCPreChatDataRequired;
