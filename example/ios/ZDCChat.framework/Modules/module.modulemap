@@ -1,0 +1,6 @@
+framework module ZDCChat {
+  umbrella header "ZDCChat.h"
+
+  export *
+  module * { export * }
+}
