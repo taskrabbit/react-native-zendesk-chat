@@ -1,0 +1,4 @@
+rootProject.name = 'app'
+
+include ':react-native-zendesk-chat'
+project(':react-native-zendesk-chat').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-zendesk-chat/android')

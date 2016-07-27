@@ -1,8 +1,12 @@
 package com.example;
 
+import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+import com.taskrabbit.zendesk.RNZendeskChatPackage;
+import com.zopim.android.sdk.api.ZopimChat;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +38,15 @@ public class MainActivity extends ReactActivity {
     @Override
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
-            new MainReactPackage()
+            new MainReactPackage(),
+            new RNZendeskChatPackage(this)
         );
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Init ZopimChat
+        ZopimChat.init("YOUR_ZOPIM_ACCOUNT_KEY");
     }
 }

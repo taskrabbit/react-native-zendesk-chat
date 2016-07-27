@@ -58,7 +58,7 @@
   [self.window makeKeyAndVisible];
   
   [ZDCChat configure:^(ZDCConfig *defaults) {
-    defaults.accountKey = @"3q3y4vnmd334dHpK6EvVALjPtSLWzNcb";
+    defaults.accountKey = @"YOUR_ZOPIM_ACCOUNT_KEY";
   }];
   return YES;
 }
