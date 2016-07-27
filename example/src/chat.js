@@ -12,20 +12,16 @@ import ZendeskChat from '../node_modules/react-native-zendesk-chat'
 export default class chatExample extends Component {
 	constructor(props) {
 	  super(props);
-	  this.state = { name: 'test', email: 'test', phone:'test'}
-	  this.onPressButton = this._onPressButton.bind(this);
+	  this.state = { name: 'Anonymous', email: 'Anonymous', phone:'Anonymous'}
+	  this._onPressButton = this._onPressButton.bind(this);
 	}
 
 	_onPressButton() {
-		// console.log(this.state.name)
+		let { name, email, phone } = this.state
 		ZendeskChat.startChat({
-			// name: this.state.name,
-			// email: this.state.email,
-			// phone: this.state.phone
-
-			name: 'yy',
-			email: 'yao4ever@hotmail.com',
-			phone: '0172826880'
+			name,
+			email,
+			phone,
 		})
 	}
 
@@ -33,11 +29,11 @@ export default class chatExample extends Component {
 		return (
   <View style = {styles.container}>
     <TextInput style={styles.input} placeholder={'Name'}
-      onChangeText={(text) => this.setState({name:text})}/>
+      onChangeText={(name) => this.setState({name:name})}/>
     <TextInput style={styles.input} placeholder={'Email'}
-      onChangeText={(text) => this.setState({email:text})}/>
+      onChangeText={(email) => this.setState({email:email})}/>
     <TextInput style={styles.input} placeholder={'Phone'}
-      onChangeText={(text) => this.setState({phone:text})}/>
+      onChangeText={(phone) => this.setState({phone:phone})}/>
     <TouchableHighlight onPress={this._onPressButton}>
       <Text>Start Chatting</Text>
     </TouchableHighlight>
