@@ -1,0 +1,48 @@
+example/
+.npmignore
+
+# node.js
+#
+node_modules/
+npm-debug.log
+
+#################
+# from .gitignore:
+################
+
+
+# Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+node_modules
+ios/RNZendeskChat/RNZendeskChat.xcodeproj/xcuserdata
+ios/RNZendeskChat/RNZendeskChat.xcodeproj/project.xcworkspace
+
+# Android/IJ
+#
+.idea
+.gradle
+**/*.iml
+local.properties
+
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xcworkspace
+!Scripts/xctool/xctool.xcworkspace
+!default.xcworkspace
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
