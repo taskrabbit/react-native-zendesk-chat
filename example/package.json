@@ -6,8 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "15.2.1",
-    "react-native": "0.30.0",
+    "react": "15.1.0",
+    "react-native": "0.27.0",
     "react-native-zendesk-chat": "0.0.2"
   }
 }

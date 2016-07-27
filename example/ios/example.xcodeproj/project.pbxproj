@@ -16,16 +16,15 @@
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		2D63979D1D47512000DC3C0A /* ZDCChat.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D63979A1D47512000DC3C0A /* ZDCChat.bundle */; };
-		2D63979E1D47512000DC3C0A /* ZDCChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D63979B1D47512000DC3C0A /* ZDCChat.framework */; };
-		2D63979F1D47512000DC3C0A /* ZDCChatStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D63979C1D47512000DC3C0A /* ZDCChatStrings.bundle */; };
-		2D6397A21D475B4600DC3C0A /* RNZendeskChatModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6397A11D475B4600DC3C0A /* RNZendeskChatModule.m */; };
+		2DAD4FD31D4887AB0026D460 /* ZDCChat.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2DAD4FD01D4887AB0026D460 /* ZDCChat.bundle */; };
+		2DAD4FD41D4887AB0026D460 /* ZDCChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DAD4FD11D4887AB0026D460 /* ZDCChat.framework */; };
+		2DAD4FD51D4887AB0026D460 /* ZDCChatStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2DAD4FD21D4887AB0026D460 /* ZDCChatStrings.bundle */; };
+		2DAD4FDC1D48898F0026D460 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
+		2DAD4FDF1D488A590026D460 /* RNZendeskChatModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD4FDE1D488A590026D460 /* RNZendeskChatModule.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -129,11 +128,11 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = example/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = example/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		2D63979A1D47512000DC3C0A /* ZDCChat.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZDCChat.bundle; sourceTree = "<group>"; };
-		2D63979B1D47512000DC3C0A /* ZDCChat.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZDCChat.framework; sourceTree = "<group>"; };
-		2D63979C1D47512000DC3C0A /* ZDCChatStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZDCChatStrings.bundle; sourceTree = "<group>"; };
-		2D6397A01D475B4600DC3C0A /* RNZendeskChatModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNZendeskChatModule.h; sourceTree = "<group>"; };
-		2D6397A11D475B4600DC3C0A /* RNZendeskChatModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNZendeskChatModule.m; sourceTree = "<group>"; };
+		2DAD4FD01D4887AB0026D460 /* ZDCChat.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZDCChat.bundle; sourceTree = "<group>"; };
+		2DAD4FD11D4887AB0026D460 /* ZDCChat.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZDCChat.framework; sourceTree = "<group>"; };
+		2DAD4FD21D4887AB0026D460 /* ZDCChatStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZDCChatStrings.bundle; sourceTree = "<group>"; };
+		2DAD4FDD1D488A590026D460 /* RNZendeskChatModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNZendeskChatModule.h; sourceTree = "<group>"; };
+		2DAD4FDE1D488A590026D460 /* RNZendeskChatModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNZendeskChatModule.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,7 +142,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +155,7 @@
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
-				2D63979E1D47512000DC3C0A /* ZDCChat.framework in Frameworks */,
+				2DAD4FD41D4887AB0026D460 /* ZDCChat.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
@@ -244,8 +242,11 @@
 		13B07FAE1A68108700A75B9A /* example */ = {
 			isa = PBXGroup;
 			children = (
-				2D6397A01D475B4600DC3C0A /* RNZendeskChatModule.h */,
-				2D6397A11D475B4600DC3C0A /* RNZendeskChatModule.m */,
+				2DAD4FDD1D488A590026D460 /* RNZendeskChatModule.h */,
+				2DAD4FDE1D488A590026D460 /* RNZendeskChatModule.m */,
+				2DAD4FD01D4887AB0026D460 /* ZDCChat.bundle */,
+				2DAD4FD11D4887AB0026D460 /* ZDCChat.framework */,
+				2DAD4FD21D4887AB0026D460 /* ZDCChatStrings.bundle */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -301,9 +302,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				2D63979A1D47512000DC3C0A /* ZDCChat.bundle */,
-				2D63979B1D47512000DC3C0A /* ZDCChat.framework */,
-				2D63979C1D47512000DC3C0A /* ZDCChatStrings.bundle */,
 				13B07FAE1A68108700A75B9A /* example */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* exampleTests */,
@@ -522,9 +520,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D63979F1D47512000DC3C0A /* ZDCChatStrings.bundle in Resources */,
+				2DAD4FD51D4887AB0026D460 /* ZDCChatStrings.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				2D63979D1D47512000DC3C0A /* ZDCChat.bundle in Resources */,
+				2DAD4FD31D4887AB0026D460 /* ZDCChat.bundle in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -561,9 +559,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				2DAD4FDC1D48898F0026D460 /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				2D6397A21D475B4600DC3C0A /* RNZendeskChatModule.m in Sources */,
+				2DAD4FDF1D488A590026D460 /* RNZendeskChatModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,12 +630,11 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native-zendesk-chat/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-zendesk-chat/ios",
 				);
 				INFOPLIST_FILE = example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
-					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
@@ -657,12 +654,11 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
-					"$(SRCROOT)/../node_modules/react-native-zendesk-chat/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-zendesk-chat/ios",
 				);
 				INFOPLIST_FILE = example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
-					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);

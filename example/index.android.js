@@ -4,6 +4,4 @@ import {
 } from 'react-native';
 import App from './src/chat';
 
-const app = new App();
-
-AppRegistry.registerComponent('example', () => app);
+AppRegistry.registerComponent('example', () => App);
