@@ -2,6 +2,11 @@
 
 Simple module that allows displaying Zopim Chat from Zendesk for React Native.
 
+## VERSIONS
+
+For RN version higher than 0.30 use version 0.1.x.
+For RN version lower than 0.30 use version 0.0.2.
+
 ## Known issues
 
 I could not find how to make the import for iOS work properly since I'm using Cocoapods for Zendesk, if you have a suggestion that would be great.
