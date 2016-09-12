@@ -2,19 +2,21 @@ package com.taskrabbit.zendesk;
 
 import android.app.Activity;
 import android.content.Intent;
-import com.facebook.react.bridge.*;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.zopim.android.sdk.api.ZopimChat;
 import com.zopim.android.sdk.model.VisitorInfo;
 import com.zopim.android.sdk.prechat.ZopimChatActivity;
 
 public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     private ReactContext mReactContext;
-    private Activity mActivity;
 
-    public RNZendeskChatModule(ReactApplicationContext reactContext, Activity activity) {
+    public RNZendeskChatModule(ReactApplicationContext reactContext) {
         super(reactContext);
-
-        mActivity = activity;
         mReactContext = reactContext;
     }
 
@@ -45,6 +47,9 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startChat(ReadableMap options) {
         setVisitorInfo(options);
-        mActivity.startActivity(new Intent(mReactContext, ZopimChatActivity.class));
+        Activity activity = getCurrentActivity();
+        if (activity != null) {
+            activity.startActivity(new Intent(mReactContext, ZopimChatActivity.class));
+        }
     }
 }
