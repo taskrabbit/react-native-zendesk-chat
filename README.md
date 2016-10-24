@@ -61,6 +61,8 @@ ZendeskChat.startChat({
   name: user.full_name,
   email: user.email,
   phone: user.mobile_phone,
+  tags: ['tag1', 'tag2'],
+  department: "Your department"
 });
 ```
 

@@ -33,3 +33,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+
+# OSX
+#
+.DS_Store
