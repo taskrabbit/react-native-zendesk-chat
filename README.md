@@ -4,8 +4,11 @@ Simple module that allows displaying Zopim Chat from Zendesk for React Native.
 
 ## VERSIONS
 
-For RN version higher than 0.30 use version 0.1.x.
+For RN version higher than 0.30 use version >= 0.1.x
+
 For RN version lower than 0.30 use version 0.0.2.
+
+Since version 0.2.0 `department` is set to `ZDCPreChatDataRequiredEditable`.
 
 ## Known issues
 
