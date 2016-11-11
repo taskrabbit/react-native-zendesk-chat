@@ -41,7 +41,7 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
       }
       config.preChatDataRequirements.name       = ZDCPreChatDataRequired;
       config.preChatDataRequirements.email      = ZDCPreChatDataRequired;
-      config.preChatDataRequirements.phone      = ZDCPreChatDataRequired;
+      config.preChatDataRequirements.phone      = ZDCPreChatDataNotRequired;
       config.preChatDataRequirements.department = ZDCPreChatDataRequiredEditable;
       config.preChatDataRequirements.message    = ZDCPreChatDataRequired;
     }];
