@@ -12,6 +12,8 @@ import com.zopim.android.sdk.api.ZopimChat;
 import com.zopim.android.sdk.model.VisitorInfo;
 import com.zopim.android.sdk.prechat.ZopimChatActivity;
 
+import java.lang.String;
+
 public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     private ReactContext mReactContext;
 
@@ -42,6 +44,11 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         VisitorInfo visitorData = builder.build();
 
         ZopimChat.setVisitorInfo(visitorData);
+    }
+
+    @ReactMethod
+    public void init(String key) {
+        ZopimChat.init(key);
     }
 
     @ReactMethod
