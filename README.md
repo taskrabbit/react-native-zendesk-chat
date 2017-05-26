@@ -16,7 +16,7 @@ I could not find how to make the import for iOS work properly since I'm using Co
 
 ## Getting started
 
-Follow the instructions to install the SDK for [iOS](https://developer.zendesk.com/embeddables/docs/ios-chat-sdk/introduction) and [Android](https://developer.zendesk.com/embeddables/docs/android-chat-sdk/gettingstarted).
+Follow the instructions to install the SDK for [iOS](https://developer.zendesk.com/embeddables/docs/ios-chat-sdk/introduction) and [Android](https://developer.zendesk.com/embeddables/docs/android-chat-sdk/introduction).
 
 ### Manual install
 #### iOS
