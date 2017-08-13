@@ -25,9 +25,9 @@ Follow the instructions to install the SDK for [iOS](https://developer.zendesk.c
 3. Configure `ZDCChat` in `AppDelegate.m`:
 
 ```
-[ZDCChat configure:^(ZDCConfig *defaults) {
-  defaults.accountKey = "YOUR_ZENDESK_ACCOUNT_KEY";
-}];
+#import <ZDCChat/ZDCChat.h>
+
+[ZDCChat initializeWithAccountKey:@"YOUR_ZENDESK_ACCOUNT_KEY"];
 ```
 
 #### Android
