@@ -202,6 +202,7 @@
 		B6462EC91C603E340010294B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../../../ios/Pods/ZDCChat/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../../React/**",
@@ -217,6 +218,7 @@
 		B6462ECA1C603E340010294B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../../../ios/Pods/ZDCChat/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../../React/**",
