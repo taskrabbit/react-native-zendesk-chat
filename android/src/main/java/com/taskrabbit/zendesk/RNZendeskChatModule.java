@@ -11,6 +11,8 @@ import com.facebook.react.bridge.ReadableMap;
 import com.zopim.android.sdk.api.ZopimChat;
 import com.zopim.android.sdk.model.VisitorInfo;
 import com.zopim.android.sdk.prechat.ZopimChatActivity;
+import com.zopim.android.sdk.prechat.PreChatForm;
+
 
 import java.lang.String;
 
@@ -47,6 +49,22 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setPreChatForm(ReadableMap options) {
+       PreChatForm defaultPreChat = new PreChatForm.Builder()
+
+        if (options.hasKey("name")) {
+            visitorInfo.name(options.getString("name"));
+        }
+        if (options.hasKey("email")) {
+            visitorInfo.email(options.getString("email"));
+        }
+
+        PreChatForm visitorData = defaultPreChat.build();
+
+        ZopimChat.setPreChatForm(visitorData);
+    }
+
+    @ReactMethod
     public void init(String key) {
         ZopimChat.init(key);
     }
@@ -54,6 +72,15 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startChat(ReadableMap options) {
         setVisitorInfo(options);
+        Activity activity = getCurrentActivity();
+        if (activity != null) {
+            activity.startActivity(new Intent(mReactContext, ZopimChatActivity.class));
+        }
+    }
+
+     @ReactMethod
+    public void startVisitorChat(ReadableMap options) {
+        setPreChatForm(options);
         Activity activity = getCurrentActivity();
         if (activity != null) {
             activity.startActivity(new Intent(mReactContext, ZopimChatActivity.class));
