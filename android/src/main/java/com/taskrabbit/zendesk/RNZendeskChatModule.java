@@ -42,23 +42,20 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         if (options.hasKey("phone")) {
             builder.phoneNumber(options.getString("phone"));
         }
-
         VisitorInfo visitorData = builder.build();
-
         ZopimChat.setVisitorInfo(visitorData);
     }
 
     @ReactMethod
     public void preChatConfig(ReadableMap options) {
-       PreChatForm preChatConfig = new PreChatForm.Builder()
-                .name(PreChatForm.Field.OPTIONAL_EDITABLE)
-                .email(PreChatForm.Field.OPTIONAL_EDITABLE)
-                .phoneNumber(PreChatForm.Field.OPTIONAL_EDITABLE)
-                .department(PreChatForm.Field.OPTIONAL_EDITABLE)
-                .message(PreChatForm.Field.OPTIONAL_EDITABLE)
+       PreChatForm defaultPreChat = new PreChatForm.Builder()
+                .name(PreChatForm.Field.REQUIRED_EDITABLE)
+                .email(PreChatForm.Field.REQUIRED_EDITABLE)
                 .build();
 
-        ZopimChat.SessionConfig config = new ZopimChat.SessionConfig().preChatForm(preChatConfig);
+        ZopimChat.init("5sfLCtINlkDxY4CaDK2L2Fw4gABcpI67")
+        .preChatForm(defaultPreChat)
+        .build();
     }
 
     @ReactMethod
