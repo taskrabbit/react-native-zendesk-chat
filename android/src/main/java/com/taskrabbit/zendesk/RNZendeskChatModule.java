@@ -50,7 +50,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setPreChatForm(ReadableMap options) {
-       PreChatForm defaultPreChat = new PreChatForm.Builder()
+       PreChatForm defaultPreChat = new PreChatForm.Builder();
 
         if (options.hasKey("name")) {
             visitorInfo.name(options.getString("name"));
