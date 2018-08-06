@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mykuya Support Chat</string>
+    <string name="chat_fragment_title">Mykuya Support Chat (fragment)</string>
+    <string name="button_no_config">Chat (no config)</string>
+    <string name="button_optional_pre_chat_activity">Chat (all fields optional)</string>
+    <string name="button_requred_pre_chat_activity">Chat (all fields required)</string>
+    <string name="button_no_pre_chat_form_activity">Chat (no pre-chat form)</string>
+    <string name="button_pre_set_data_activity">Chat (pre-set data)</string>
+    <string name="button_chat_fragment">Chat (fragment)</string>
+    <string name="button_account_key">Update account key</string>
+    <string name="hint_account_key">Update account key</string>
+    <string name="error_account_key">please enter the account key</string>
+    <string name="account_key_confirm">Chat reinitialized with new account key</string>
+
+</resources>
