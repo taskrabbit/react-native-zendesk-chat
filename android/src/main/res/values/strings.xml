@@ -12,6 +12,7 @@
     <string name="button_account_key">Update account key</string>
     <string name="hint_account_key">Update account key</string>
     <string name="error_account_key">please enter the account key</string>
+    <string name="chat_activity_title">MyKuya Support</string>
     <string name="account_key_confirm">Chat reinitialized with new account key</string>
 
 </resources>
