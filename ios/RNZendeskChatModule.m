@@ -48,4 +48,13 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
   });
 }
 
+RCT_EXPORT_METHOD(startVisitorChat:(NSDictionary *)options) {
+  [ZDCChat initializeWithAccountKey:@"5sfLCtINlkDxY4CaDK2L2Fw4gABcpI67"];
+  
+  [ZDCChat startChatIn:self.navigationController withConfig:^(ZDCConfig *config) {
+    config.preChatDataRequirements.name = ZDCPreChatDataRequired;
+    config.preChatDataRequirements.email = ZDCPreChatDataRequired;
+  }];
+}
+
 @end

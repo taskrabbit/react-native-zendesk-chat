@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="ZopimChatTheme" parent="ZopimChatTheme.Light.Dialog">
+        <!-- Customize chat theme here. -->
+        <item name="colorAccent">@color/mykuya</item>
+        <item name="colorPrimary">@color/mykuya</item>
+        <item name="colorPrimaryDark">@color/mykuya_blue</item>
+    </style>
+
+</resources>
