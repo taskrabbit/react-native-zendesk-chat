@@ -1,6 +1,6 @@
 {
   "name": "react-native-zendesk-chat",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "React Native Wrapper around Zopim Zendesk Chat",
   "main": "index.js",
   "repository": {
@@ -16,6 +16,15 @@
     "android",
     "react-component"
   ],
+  "homepage": "https://github.com/taskrabbit/react-native-zendesk-chat.git",
+  "bugs": "https://github.com/taskrabbit/react-native-zendesk-chat/issues",
   "author": "jrichardlai",
-  "license": "MIT"
+  "contributors": [
+    "Robert Murray <rmurray@taskrabbit.com>"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.11.0",
+    "react-native": "^0.60.0"
+  }
 }
