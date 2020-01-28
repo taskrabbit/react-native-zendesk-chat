@@ -14,8 +14,6 @@ For RN version lower than 0.59 use version <= 0.2.2
 
 Follow the instructions to install the SDK for [iOS](https://developer.zendesk.com/embeddables/docs/ios-chat-sdk/introduction) and [Android](https://developer.zendesk.com/embeddables/docs/android-chat-sdk/introduction).
 
-### Autolinking Install (RN > 0.62)
-
 ### Manual install
 
 1. With npm:
