@@ -32,7 +32,7 @@ Follow the instructions to install the SDK for [iOS](https://developer.zendesk.c
 
 #### Android
 1. `npm install react-native-zendesk-chat --save`
-2. Open up `android/app/main/java/[...]/MainActivity.java`
+2. Open up `android/app/main/java/[...]/MainApplication.java`
   - Add `import com.taskrabbit.zendesk.*;` to the imports at the top of the file
   - Add `new RNZendeskChatPackage(this)` to the list returned by the `getPackages()` method
 
