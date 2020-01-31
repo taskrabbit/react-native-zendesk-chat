@@ -48,4 +48,8 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
   });
 }
 
+RCT_EXPORT_METHOD(init:(NSString *)zenDeskKey) {
+  [ZDCChat initializeWithAccountKey:zenDeskKey];
+}
+
 @end
