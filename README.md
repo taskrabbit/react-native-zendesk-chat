@@ -51,11 +51,6 @@ Follow the instructions to install the SDK for [iOS](https://developer.zendesk.c
 - Add `import com.taskrabbit.zendesk.*;` to the imports at the top of the file
 - Add `new RNZendeskChatPackage(this)` to the list returned by the `getPackages()` method
 
-2. Open up `android/app/main/java/[...]/MainActivity.java`
-
-- Add `import com.taskrabbit.zendesk.*;` to the imports at the top of the file
-- Add `new RNZendeskChatPackage(this)` to the list returned by the `getPackages()` method
-
 3. Append the following lines to `android/settings.gradle`:
 
 ```
