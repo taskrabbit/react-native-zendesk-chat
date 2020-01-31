@@ -4,24 +4,38 @@ Simple module that allows displaying Zopim Chat from Zendesk for React Native.
 
 ## VERSIONS
 
-For RN version higher than 0.30 use version >= 0.1.x
+For RN version higher than 0.59 use version >= 0.3.0
 
-For RN version lower than 0.30 use version 0.0.2.
+For RN version lower than 0.59 use version <= 0.2.2
 
-Since version 0.2.0 `department` is set to `ZDCPreChatDataRequiredEditable`.
+## Known Issues
 
-## Known issues
-
-I could not find how to make the import for iOS work properly since I'm using Cocoapods for Zendesk, if you have a suggestion that would be great.
-
-## Getting started
+## Getting Started
 
 Follow the instructions to install the SDK for [iOS](https://developer.zendesk.com/embeddables/docs/ios-chat-sdk/introduction) and [Android](https://developer.zendesk.com/embeddables/docs/android-chat-sdk/introduction).
 
 ### Manual install
+
+1. With npm:
+
+   `npm install react-native-zendesk-chat --save`
+
+   or with yarn:
+
+   `yarn add react-native-zendesk-chat`
+
 #### iOS
-1. `npm install react-native-zendesk-chat --save`
-2. In Xcode, drag and drop `node_modules/react-native-zendesk-chat/RNZendeskChat.m` and `node_modules/react-native-zendesk-chat/RNZendeskChat.h` into your project.
+
+2. Add a reference to your Podfile:
+
+   `pod 'RNZendeskChat', :git => 'https://github.com/robertmurray/react-native-zendesk-chat.git'`
+
+   then run pod install: `(cd ios; pod install)`
+
+   or manually:
+
+   In Xcode, drag and drop `node_modules/react-native-zendesk-chat/RNZendeskChat.m` and `node_modules/react-native-zendesk-chat/RNZendeskChat.h` into your project.
+
 3. Configure `ZDCChat` in `AppDelegate.m`:
 
 ```
@@ -31,10 +45,11 @@ Follow the instructions to install the SDK for [iOS](https://developer.zendesk.c
 ```
 
 #### Android
-1. `npm install react-native-zendesk-chat --save`
+
 2. Open up `android/app/main/java/[...]/MainApplication.java`
-  - Add `import com.taskrabbit.zendesk.*;` to the imports at the top of the file
-  - Add `new RNZendeskChatPackage(this)` to the list returned by the `getPackages()` method
+
+- Add `import com.taskrabbit.zendesk.*;` to the imports at the top of the file
+- Add `new RNZendeskChatPackage(this)` to the list returned by the `getPackages()` method
 
 3. Append the following lines to `android/settings.gradle`:
 
@@ -57,9 +72,13 @@ ZopimChat.init("YOUR_ZENDESK_ACCOUNT_KEY").build();
 
 ## Usage
 
-In your code add `import ZendeskChat from 'react-native-zendesk-chat';`.
+In your code add:
 
 ```
+import ZendeskChat from 'react-native-zendesk-chat
+
+...
+
 ZendeskChat.startChat({
   name: user.full_name,
   email: user.email,
@@ -71,5 +90,9 @@ ZendeskChat.startChat({
 
 ## TODO
 
-* Allow setting form configuration from JS
-* Add examples
+- Allow setting form configuration from JS
+- Add examples
+
+## License
+
+React Native is MIT licensed, as found in the [LICENSE](https://github.com/taskrabbit/react-native-zendesk-chat/LICENSE) file.
