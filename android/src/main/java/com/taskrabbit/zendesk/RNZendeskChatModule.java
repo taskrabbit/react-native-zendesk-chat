@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.zopim.android.sdk.api.ZopimChat;
+import com.zopim.android.sdk.prechat.PreChatForm;
 import com.zopim.android.sdk.model.VisitorInfo;
 import com.zopim.android.sdk.prechat.ZopimChatActivity;
 
@@ -48,7 +49,16 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void init(String key) {
-        ZopimChat.init(key);
+        PreChatForm defaultPreChat = new PreChatForm.Builder()
+                .name(PreChatForm.Field.REQUIRED)
+                .email(PreChatForm.Field.REQUIRED)
+                .phoneNumber(PreChatForm.Field.REQUIRED)
+                .department(PreChatForm.Field.REQUIRED_EDITABLE)
+                .message(PreChatForm.Field.REQUIRED)
+                .build();
+        ZopimChat.init(key)
+            .preChatForm(defaultPreChat)
+            .build();
     }
 
     @ReactMethod
