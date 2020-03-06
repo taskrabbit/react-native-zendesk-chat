@@ -7,10 +7,10 @@ def safeExtGet(prop, fallback) {
 buildscript {
   repositories {
     jcenter()
+    google()
   }
 
   dependencies {
-    google()
     classpath 'com.android.tools.build:gradle:3.2.1'
   }
 }
