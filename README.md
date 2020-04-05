@@ -67,6 +67,7 @@ compile project(':react-native-zendesk-chat')
 5. Configure `ZopimChat` in `android/app/main/java/[...]/MainActivity.java`
 
 ```
+import com.zopim.android.sdk.api.ZopimChat;
 ZopimChat.init("YOUR_ZENDESK_ACCOUNT_KEY").build();
 ```
 
