@@ -1,0 +1,11 @@
+{
+	"overrides": [
+		{
+			"files": "package.json",
+			"options": { "parser": "json" }
+		}
+	],
+	"proseWrap": "never",
+	"trailingComma": "all",
+	"useTabs": true
+}

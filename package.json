@@ -1,30 +1,42 @@
 {
-  "name": "react-native-zendesk-chat",
-  "version": "0.3.1",
-  "description": "React Native Wrapper around Zopim Zendesk Chat",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/taskrabbit/react-native-zendesk-chat"
-  },
-  "keywords": [
-    "zendesk",
-    "chat",
-    "react-native",
-    "react",
-    "ios",
-    "android",
-    "react-component"
-  ],
-  "homepage": "https://github.com/taskrabbit/react-native-zendesk-chat.git",
-  "bugs": "https://github.com/taskrabbit/react-native-zendesk-chat/issues",
-  "author": "jrichardlai",
-  "contributors": [
-    "Robert Murray <rmurray@taskrabbit.com>"
-  ],
-  "license": "MIT",
-  "peerDependencies": {
-    "react": "^16.11.0",
-    "react-native": "^0.60.0"
-  }
+	"name": "react-native-zendesk-chat",
+	"version": "0.3.1",
+	"description": "React Native Wrapper around Zopim Zendesk Chat",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/taskrabbit/react-native-zendesk-chat"
+	},
+	"scripts": {
+		"prettier": "prettier",
+		"prettier:all": "prettier --write '**/*.json' '**/*.js' '**/*.ts' ",
+		"lint": "eslint"
+	},
+	"keywords": [
+		"zendesk",
+		"chat",
+		"react-native",
+		"react",
+		"ios",
+		"android",
+		"react-component"
+	],
+	"homepage": "https://github.com/taskrabbit/react-native-zendesk-chat.git",
+	"bugs": "https://github.com/taskrabbit/react-native-zendesk-chat/issues",
+	"author": "jrichardlai",
+	"contributors": [
+		"Brian Leonard <brian@taskrabbit.com>",
+		"Frederic Barthelemy <frederic@taskrabbit.com>",
+		"Jean-Richard Lai <github.com/jrichardlai>",
+		"Jordan Smith <jordan@taskrabbit.com>",
+		"Michael Kachanovskyi <mikach27@gmail.com>",
+		"Robert Murray <rmurray@taskrabbit.com>",
+		"Zane Chua <github.com/zanechua>"
+	],
+	"license": "MIT",
+	"devDependencies": { "prettier": "2.0.x", "eslint": "7.3.x" },
+	"peerDependencies": {
+		"react": "^16.11.0",
+		"react-native": "^0.60.0"
+	}
 }
