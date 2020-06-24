@@ -35,7 +35,7 @@ If you're on older react-native versions, please see the [Advanced Setup](#advan
 
 **Android** If you're on react-native >= 0.60, Android should autodetect this dependency. You may need to call `react-native link`
 
-1. Call the JS Initializer:
+2. Call the JS Initializer:
 
 ```javascript
 import ZendeskChat from "react-native-zendesk-chat";
@@ -44,7 +44,7 @@ import ZendeskChat from "react-native-zendesk-chat";
 ZendeskChat.init("YOUR_ZENDESK_ACCOUNT_KEY");
 ```
 
-1. Show the Chat UI
+3. Show the Chat UI
 
 ```javascript
 // On button press, when you want to show chat:
@@ -101,20 +101,20 @@ If this doesn't work, then you may need to do a complete manual install as follo
 - Add `import com.taskrabbit.zendesk.*;` to the imports at the top of the file
 - Add `new RNZendeskChatPackage(this)` to the list returned by the `getPackages()` method
 
-1. Append the following lines to `android/settings.gradle`:
+2. Append the following lines to `android/settings.gradle`:
 
 ```gradle
 include ':react-native-zendesk-chat'
 project(':react-native-zendesk-chat').projectDir = new File(rootProject.projectDir,	'../node_modules/react-native-zendesk-chat/android')
 ```
 
-1. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
+3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
 
 ```gradle
 compile project(':react-native-zendesk-chat')
 ```
 
-1. Configure `ZopimChat` in `android/app/main/java/[...]/MainActivity.java`
+4. Configure `ZopimChat` in `android/app/main/java/[...]/MainActivity.java`
 
 ```java
 // Note: there is a JS method to do this!
