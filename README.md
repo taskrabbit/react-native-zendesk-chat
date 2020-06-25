@@ -110,6 +110,14 @@ project(':react-native-zendesk-chat').projectDir = new File(rootProject.projectD
 
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
 
+For RN >= 0.60:
+
+```gradle
+implementation group: "com.zopim.android", name: "sdk", version: '1.4.9'
+```
+
+For RN < 0.60:
+
 ```gradle
 compile project(':react-native-zendesk-chat')
 ```
