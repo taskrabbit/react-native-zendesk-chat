@@ -1,0 +1,20 @@
+# Android-specific gitignoreables
+
+.idea
+.gradle
+**/*.iml
+build/
+.idea
+.gradle
+local.properties
+
+# Classpath can differ on developer machines, though I think it's relative currently
+.classpath
+# Project files can contain developer-specific config? It's unclear,
+# and the community debates whether they should be ignored.
+# Since they're auto-generated sometimes, this should be okay?
+.project
+
+# I think this is genned by vscode-java extension
+org.eclipse.buildship.core.prefs
+org.eclipse.jdt.core.prefs

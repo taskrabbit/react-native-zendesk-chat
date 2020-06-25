@@ -2,15 +2,9 @@
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
 package-lock.json
+yarn-error.log
 ios/RNZendeskChat/RNZendeskChat.xcodeproj/xcuserdata
 ios/RNZendeskChat/RNZendeskChat.xcodeproj/project.xcworkspace
-
-# Android/IJ
-#
-.idea
-.gradle
-**/*.iml
-local.properties
 
 # Xcode
 #
