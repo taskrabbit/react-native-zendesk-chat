@@ -102,11 +102,10 @@ if (!!options) {\
 	ParseFormFieldStatus(phoneNumber);
 	ParseFormFieldStatus(department);
 #undef ParseFormFieldStatus
-	ZDKChatFormConfiguration * config = [[ZDKChatFormConfiguration alloc] initWithName:name
-																				 email:email
-																		   phoneNumber:phoneNumber
-																			department:department];
-	return config;
+	return [[ZDKChatFormConfiguration alloc] initWithName:name
+													email:email
+											  phoneNumber:phoneNumber
+											   department:department];
 }
 - (ZDKChatConfiguration *)chatConfigurationFromConfig:(NSDictionary*)options {
 	options = options ?: @{};
@@ -131,7 +130,11 @@ config.target = [RCTConvert BOOL: behaviorFlags[@"" #key] ?: @YES]
 #undef ParseBehaviorFlag
 
 	if (config.isPreChatFormEnabled) {
-		config.preChatFormConfiguration = [self preChatFormConfigurationFromConfig:options[@"preChatFormOptions"]];
+		ZDKChatFormConfiguration * formConfig = [self preChatFormConfigurationFromConfig:options[@"preChatFormOptions"]];
+		if (!!formConfig) {
+			// Zendesk Swift Code crashes if you provide a nil form
+			config.preChatFormConfiguration = formConfig;
+		}
 	}
 	return config;
 }
