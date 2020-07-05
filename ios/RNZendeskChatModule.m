@@ -99,12 +99,12 @@ if (!!options) {\
 	ZDKFormFieldStatus key = [RCTConvert ZDKFormFieldStatus:options[@"" #key]]
 	ParseFormFieldStatus(name);
 	ParseFormFieldStatus(email);
-	ParseFormFieldStatus(phoneNumber);
+	ParseFormFieldStatus(phone);
 	ParseFormFieldStatus(department);
 #undef ParseFormFieldStatus
 	return [[ZDKChatFormConfiguration alloc] initWithName:name
 													email:email
-											  phoneNumber:phoneNumber
+											  phoneNumber:phone
 											   department:department];
 }
 - (ZDKChatConfiguration *)chatConfigurationFromConfig:(NSDictionary*)options {
