@@ -64,8 +64,15 @@ declare module "react-native-zendesk-chat" {
 	}
 
 	class RNZendeskChatModuleImpl {
+		/**
+		 * Must be called before calling startChat/setVisitorInfo
+		 * - (Advanced users may configure this natively instead of calling this from JS)
+		 */
 		init: (zendeskAccountKey: string) => void;
 
+		/**
+		 * Presents the Zendesk Chat User Interface
+		 */
 		startChat: (options: StartChatOptions) => void;
 		/**
 		 * Backwards Compatibility!
