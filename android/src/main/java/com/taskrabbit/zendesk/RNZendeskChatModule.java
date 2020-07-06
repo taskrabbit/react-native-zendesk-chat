@@ -1,7 +1,7 @@
 package com.taskrabbit.zendesk;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -9,10 +9,16 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.zopim.android.sdk.api.ZopimChat;
-import com.zopim.android.sdk.prechat.PreChatForm;
-import com.zopim.android.sdk.model.VisitorInfo;
-import com.zopim.android.sdk.prechat.ZopimChatActivity;
+import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableNativeMap;
+import zendesk.chat.Chat;
+import zendesk.chat.ChatConfiguration;
+import zendesk.chat.ProfileProvider;
+import zendesk.chat.PreChatFormFieldStatus;
+import zendesk.chat.ChatEngine;
+import zendesk.chat.VisitorInfo;
+import zendesk.messaging.MessagingActivity;
+import zendesk.messaging.MessagingConfiguration;
 
 import java.lang.String;
 import java.util.ArrayList;
@@ -29,7 +35,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         if (!options.hasKey(key)) {
             return result;
         }
-        if (options.getType(key) != ReadableArray) {
+        if (options.getType(key) != ReadableType.Array) {
             Log.e(RNZendeskChatModule.TAG, "wrong type for key '" + key + "' when processing " + functionHint
                     + ", expected an Array of Strings.");
             return result;
@@ -39,7 +45,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             if (arr.isNull(i)) {
                 continue;
             }
-            if (arr.getType() != String) {
+            if (arr.getType(i) != ReadableType.String) {
                 Log.e(RNZendeskChatModule.TAG, "wrong type for key '" + key + "[" + i + "]' when processing "
                         + functionHint + ", expected entry to be a String.");
             }
@@ -52,7 +58,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         if (!options.hasKey(key)) {
             return null;
         }
-        if (options.getType(key) != String) {
+        if (options.getType(key) != ReadableType.String) {
             Log.e(RNZendeskChatModule.TAG,
                     "wrong type for key '" + key + "' when processing " + functionHint + ", expected a String.");
             return null;
@@ -60,12 +66,24 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         return options.getString(key);
     }
 
+    public static int getIntOrDefault(ReadableMap options, String key, String functionHint, int defaultValue) {
+        if (!options.hasKey(key)) {
+            return defaultValue;
+        }
+        if (options.getType(key) != ReadableType.String) {
+            Log.e(RNZendeskChatModule.TAG,
+                    "wrong type for key '" + key + "' when processing " + functionHint + ", expected an Integer.");
+            return defaultValue;
+        }
+        return options.getInt(key);
+    }
+
     public static boolean getBooleanOrDefault(ReadableMap options, String key, String functionHint,
             boolean defaultValue) {
         if (!options.hasKey(key)) {
             return defaultValue;
         }
-        if (options.getType(key) != Boolean) {
+        if (options.getType(key) != ReadableType.Boolean) {
             Log.e(RNZendeskChatModule.TAG,
                     "wrong type for key '" + key + "' when processing " + functionHint + ", expected a Boolean.");
             return defaultValue;
@@ -78,7 +96,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         if (!options.hasKey(key)) {
             return defaultValue;
         }
-        if (options.getType(key) != String) {
+        if (options.getType(key) != ReadableType.String) {
             Log.e(RNZendeskChatModule.TAG, "wrong type for key '" + key
                     + "' when processing startChat(preChatFormOptions), expected one of ('required' | 'optional' | 'hidden').");
             return defaultValue;
@@ -99,12 +117,12 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
     public static ReadableMap getReadableMap(ReadableMap options, String key, String functionHint) {
         if (!options.hasKey(key)) {
-            return new ReadableMap();
+            return new WritableNativeMap();
         }
-        if (options.getType(key) != ReadableMap) {
+        if (options.getType(key) != ReadableType.Map) {
             Log.e(RNZendeskChatModule.TAG,
                     "wrong type for key '" + key + "' when processing " + functionHint + ", expected a config hash.");
-            return new ReadableMap();
+            return new WritableNativeMap();
         }
         return options.getMap(key);
     }
@@ -124,7 +142,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setVisitorInfo(ReadableMap options) {
-        VisitorInfo.Builder builder = new VisitorInfo.Builder();
+        VisitorInfo.Builder builder = VisitorInfo.builder();
 
         String name = getStringOrNull(options, "name", "visitorInfo");
         if (name != null) {
@@ -141,12 +159,18 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
         VisitorInfo visitorData = builder.build();
 
-        Chat.INSTANCE.providers().profileProvider().setVisitorInfo(visitorData);
+        if (Chat.INSTANCE.providers() == null) {
+            Log.e(TAG,
+                    "Zendesk Internals are undefined -- did you forget to call RNZendeskModule.init(<account_key>)?");
+            return;
+        }
+        Chat.INSTANCE.providers().profileProvider().setVisitorInfo(visitorData, null);
     }
 
     @ReactMethod
     public void init(String key) {
         Chat.INSTANCE.init(mReactContext, key);
+        Log.d(TAG, "Chat.INSTANCE was properly initialized from JS.");
     }
 
     private ChatConfiguration.Builder loadBehaviorFlags(ChatConfiguration.Builder b, ReadableMap options) {
@@ -161,7 +185,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     }
 
     private ChatConfiguration.Builder loadPreChatFormConfiguration(ChatConfiguration.Builder b, ReadableMap options) {
-        PreChatFormFieldStatus defaultValue = preChatFormFieldStatus.OPTIONAL;
+        PreChatFormFieldStatus defaultValue = PreChatFormFieldStatus.OPTIONAL;
         return b.withNameFieldStatus(getFieldStatusOrDefault(options, "name", defaultValue))
                 .withEmailFieldStatus(getFieldStatusOrDefault(options, "email", defaultValue))
                 .withPhoneFieldStatus(getFieldStatusOrDefault(options, "phone", defaultValue))
@@ -173,32 +197,55 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         // as things change -- aka doing a diff :-(
         // ZendeskChat iOS just lets you override the full array so this isn't
         // necessary on that side.
+        if (Chat.INSTANCE.providers() == null) {
+            Log.e(TAG,
+                    "Zendesk Internals are undefined -- did you forget to call RNZendeskModule.init(<account_key>)?");
+            return;
+        }
 
-        ChatProfileProvider profileProvider = Chat.INSTANCE.providers().profileProvider();
-        ArrayList<String> activeTags = currentUserTags.clone();
+        ProfileProvider profileProvider = Chat.INSTANCE.providers().profileProvider();
+        ArrayList<String> activeTags = (ArrayList<String>) currentUserTags.clone();
 
         ArrayList<String> allProvidedTags = RNZendeskChatModule.getArrayListOfStrings(options, "tags", "startChat");
-        ArrayList<String> newlyIntroducedTags = allProvidedTags.clone();
+        ArrayList<String> newlyIntroducedTags = (ArrayList<String>) allProvidedTags.clone();
 
         newlyIntroducedTags.remove(activeTags); // Now just includes tags to add
         currentUserTags.removeAll(allProvidedTags); // Now just includes tags to delete
 
         if (!currentUserTags.isEmpty()) {
-            profileProvider.removeVisitorTags(currentUserTags);
+            profileProvider.removeVisitorTags(currentUserTags, null);
         }
         if (!newlyIntroducedTags.isEmpty()) {
-            profileProvider.addVisitorTags(newlyIntroducedTags);
+            profileProvider.addVisitorTags(newlyIntroducedTags, null);
         }
 
         currentUserTags = allProvidedTags;
     }
 
-    private Object loadBotSettings(ReadableMap options, Object builder) {
+    private MessagingConfiguration.Builder loadBotSettings(ReadableMap options,
+            MessagingConfiguration.Builder builder) {
+        if (options == null) {
+            return builder;
+        }
+        String botName = getStringOrNull(options, "botName", "loadBotSettings");
+        if (botName != null) {
+            builder = builder.withBotLabelString(botName);
+        }
+        int avatarDrawable = getIntOrDefault(options, "botAvatarDrawableId", "loadBotSettings", -1);
+        if (avatarDrawable != -1) {
+            builder = builder.withBotAvatarDrawable(avatarDrawable);
+        }
+
         return builder;
     }
 
     @ReactMethod
     public void startChat(ReadableMap options) {
+        if (Chat.INSTANCE.providers() == null) {
+            Log.e(TAG,
+                    "Zendesk Internals are undefined -- did you forget to call RNZendeskModule.init(<account_key>)?");
+            return;
+        }
         setVisitorInfo(options);
 
         ReadableMap flagHash = RNZendeskChatModule.getReadableMap(options, "behaviorFlags", "startChat");
@@ -209,21 +256,23 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             chatBuilder = loadPreChatFormConfiguration(chatBuilder,
                     getReadableMap(options, "preChatFormOptions", "startChat"));
         }
-        ChatConfiguration = chatBuilder.build();
+        ChatConfiguration chatConfig = chatBuilder.build();
 
         String department = RNZendeskChatModule.getStringOrNull(options, "department", "startChat");
-        if (department) {
+        if (department != null) {
             Chat.INSTANCE.providers().chatProvider().setDepartment(department, null);
         }
 
         loadTags(options);
 
-        Object messagingBuilder = loadBotSettings(getReadableMap(options, "messagingOptions", "startChat"),
-                MessagingActivity.builder());
+        MessagingConfiguration.Builder messagingBuilder = loadBotSettings(
+                getReadableMap(options, "messagingOptions", "startChat"), MessagingActivity.builder());
 
         Activity activity = getCurrentActivity();
         if (activity != null) {
-            messagingBuilder.withEngines(ChatEngine.engine()).show(view.getContext());
+            messagingBuilder.withEngines(ChatEngine.engine()).show(activity, chatConfig);
+        } else {
+            Log.e(TAG, "Could not load getCurrentActivity -- no UI can be displayed without it.");
         }
     }
 }
