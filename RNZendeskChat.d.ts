@@ -5,20 +5,23 @@ declare module "react-native-zendesk-chat" {
 		phone?: string;
 	}
 
-	interface MessagingOptions_iOS {
+	interface MessagingOptionsCommon {
 		/** Set this to set the bot's displayName */
 		botName?: string;
+	}
+	interface MessagingOptions_iOS extends MessagingOptionsCommon {
 		/** Will be loaded using [UIImage imageWithName:…] ) */
-		botImageName?: string;
-		/** Will be loaded using [UIImage imageWithUrl:…] */
-		botImageUrl?: string;
+		botAvatarName?: string;
+		/** Will be loaded using [UIImage imageWithData:[NSData dataWithContentsOfUrl:…]] */
+		botAvatarUrl?: string;
+	}
+	interface MessagingOptions_Android extends MessagingOptionsCommon {
+		/** Will be loaded from your native asset resources */
+		botAvatarDrawableId?: number;
 	}
 
-	const enum PreChatFormFieldOptionVisibility {
-		hidden = "hidden",
-		optional = "optional",
-		required = "required",
-	}
+	/** Current default is "optional" */
+	type PreChatFormFieldOptionVisibility = "hidden" | "optional" | "required";
 
 	interface StartChatOptions extends VisitorInfoOptions {
 		department?: string;
@@ -42,7 +45,7 @@ declare module "react-native-zendesk-chat" {
 			/** Should we ask the user their name? */
 			name?: PreChatFormFieldOptionVisibility;
 			/** Should we ask the user for their phone number? */
-			phoneNumber?: PreChatFormFieldOptionVisibility;
+			phone?: PreChatFormFieldOptionVisibility;
 			/** Should we ask the user which department? */
 			department?: PreChatFormFieldOptionVisibility;
 		};
@@ -50,10 +53,12 @@ declare module "react-native-zendesk-chat" {
 		/**
 		 * Configure the Chat-Bot (if any)
 		 */
-		messagingOptions?: MessagingOptions_iOS;
+		messagingOptions?: MessagingOptions_iOS & MessagingOptions_Android;
 
 		/**
 		 * If not provided, this will be "Close" -- not localized!
+		 *
+		 * -- iOS Only (Android: shows just a Back Button)
 		 */
 		localizedDismissButtonTitle?: string;
 	}

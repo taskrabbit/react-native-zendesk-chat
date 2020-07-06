@@ -77,14 +77,14 @@ if (!!options) {\
 		RNZDKConfigHashErrorLog(options, @"MessagingConfiguration config options");
 		return config;
 	}
-	if (options[@"name"]) {
-		config.name = options[@"name"];
+	if (options[@"botName"]) {
+		config.name = options[@"botName"];
 	}
 
-	if (options[@"botImageName"]) {
-		config.botAvatar = [UIImage imageNamed:@"botImageName"];
-	} else if (options[@"botImageUrl"]) {
-		config.botAvatar = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:options[@"botImageUrl"]]]];
+	if (options[@"botAvatarName"]) {
+		config.botAvatar = [UIImage imageNamed:@"botAvatarName"];
+	} else if (options[@"botAvatarUrl"]) {
+		config.botAvatar = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:options[@"botAvatarUrl"]]]];
 	}
 
 	return config;
