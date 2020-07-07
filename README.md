@@ -55,15 +55,15 @@ ZendeskChat.startChat({
 	phone: user.mobile_phone,
 	tags: ["tag1", "tag2"],
 	department: "Your department",
+	// The behaviorFlags are optional, and each default to 'true' if omitted
 	behaviorFlags: {
-		// This is optional
 		showAgentAvailability: true,
 		showChatTranscriptPrompt: true,
 		showPreChatForm: true,
 		showOfflineForm: true,
 	},
+	// The preChatFormOptions are optional & each defaults to "optional" if omitted
 	preChatFormOptions: {
-		// This is optional
 		name: !user.full_name ? "required" : "optional",
 		email: "optional",
 		phone: "optional",
