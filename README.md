@@ -81,6 +81,14 @@ On Android, this is the [official documentation](https://developer.zendesk.com/e
 
 While on iOS, the options are more minimal -- check the [official doc page](https://developer.zendesk.com/embeddables/docs/chat-sdk-v-2-for-ios/customize_the_look#styling-the-chat-screen)
 
+### Migrating
+
+_From react-native-zendesk-chat <= 0.3.0_
+
+To migrate from previous versions of the library, you should probably remove all integration steps you applied, and start over from the [Quick Start](#quickstart--usage).
+
+The JS API calls are very similar, with mostly additive changes.
+
 ### Advanced Setup
 
 Advanced users, or users running on older versions of react-native may want to initialize things in native.
