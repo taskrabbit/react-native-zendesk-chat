@@ -7,8 +7,8 @@ This library assumes you're familiar with Zendesk's Official Documentation: [iOS
 ## VERSIONS
 
 - For **Zendesk Chat v2** use version >= 0.4.0 (this requires RN 0.59 or later!)
-- For RN version higher than 0.59 use version >= 0.3.0 (Zendesk Chat v1)
-- For RN version lower than 0.59 use version <= 0.2.2 (Zendesk Chat v1)
+- For RN version >= 0.59 use version >= 0.3.0 (Zendesk Chat v1)
+- For RN version < 0.59 use version <= 0.2.2 (Zendesk Chat v1)
 
 ## Known Issues
 
@@ -34,7 +34,7 @@ $ (cd ios; pod install) # and see if there are any errors
 
 If you're on older react-native versions, please see the [Advanced Setup](#advanced-setup) section below
 
-**Android** If you're on react-native >= 0.60, Android should autodetect this dependency. You may need to call `react-native link`
+**Android** If you're on react-native >= 0.60, Android should autodetect this dependency. If you're on 0.59, you may need to call `react-native link`
 
 2. Call the JS Initializer:
 
