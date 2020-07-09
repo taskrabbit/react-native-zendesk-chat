@@ -3,29 +3,83 @@ declare module "react-native-zendesk-chat" {
 		name?: string;
 		email?: string;
 		phone?: string;
-
-		/** only implemented on iOS */
-		shouldPersist?: boolean;
 	}
-	interface StartChatOptions_iOS extends VisitorInfoOptions {
+
+	interface MessagingOptionsCommon {
+		/** Set this to set the bot's displayName */
+		botName?: string;
+	}
+	interface MessagingOptions_iOS extends MessagingOptionsCommon {
+		/** Will be loaded using [UIImage imageWithName:…] ) */
+		botAvatarName?: string;
+		/** Will be loaded using [UIImage imageWithData:[NSData dataWithContentsOfUrl:…]] */
+		botAvatarUrl?: string;
+	}
+	interface MessagingOptions_Android extends MessagingOptionsCommon {
+		/** Will be loaded from your native asset resources */
+		botAvatarDrawableId?: number;
+	}
+
+	/** Current default is "optional" */
+	type PreChatFormFieldOptionVisibility = "hidden" | "optional" | "required";
+
+	interface StartChatOptions extends VisitorInfoOptions {
 		department?: string;
 		tags?: string[];
 
-		// Flags to disable some fields collected by default.
-		emailNotRequired?: boolean;
-		phoneNotRequired?: boolean;
-		departmentNotRequired?: boolean;
-		messageNotRequired?: boolean;
+		behaviorFlags?: {
+			/** if omitted, the form is enabled */
+			showPreChatForm?: boolean;
+			/** if omitted, the prompt is enabled */
+			showChatTranscriptPrompt?: boolean;
+			/** if omitted, the form is enabled */
+			showOfflineForm?: boolean;
+			/** if omitted, the agent availability message is enabled */
+			showAgentAvailability?: boolean;
+		};
+
+		/** If omitted, the preChatForm will be left as default in Zendesk */
+		preChatFormOptions?: {
+			/** Should we ask the user for a contact email? */
+			email?: PreChatFormFieldOptionVisibility;
+			/** Should we ask the user their name? */
+			name?: PreChatFormFieldOptionVisibility;
+			/** Should we ask the user for their phone number? */
+			phone?: PreChatFormFieldOptionVisibility;
+			/** Should we ask the user which department? */
+			department?: PreChatFormFieldOptionVisibility;
+		};
+
+		/**
+		 * Configure the Chat-Bot (if any)
+		 */
+		messagingOptions?: MessagingOptions_iOS & MessagingOptions_Android;
+
+		/**
+		 * If not provided, this will be "Close" -- not localized!
+		 *
+		 * -- iOS Only (Android: shows just a Back Button)
+		 */
+		localizedDismissButtonTitle?: string;
 	}
-	type StartChatOptions_Android = VisitorInfoOptions;
-	type StartChatOptions = StartChatOptions_iOS & StartChatOptions_Android;
 
 	class RNZendeskChatModuleImpl {
+		/**
+		 * Must be called before calling startChat/setVisitorInfo
+		 * - (Advanced users may configure this natively instead of calling this from JS)
+		 */
 		init: (zendeskAccountKey: string) => void;
 
-		setVisitorInfo: (options: VisitorInfoOptions) => void;
-
+		/**
+		 * Presents the Zendesk Chat User Interface
+		 */
 		startChat: (options: StartChatOptions) => void;
+		/**
+		 * Backwards Compatibility!
+		 * - You can pass all these parameters to RNZendeskChatModule.startChat
+		 * - So you should probably prefer that method
+		 */
+		setVisitorInfo: (options: VisitorInfoOptions) => void;
 	}
 
 	const RNZendeskChatModule: RNZendeskChatModuleImpl;

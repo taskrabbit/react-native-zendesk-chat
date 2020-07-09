@@ -1,6 +1,9 @@
 {
 	"cSpell.words": [
+		"autodetect",
 		"barthelemy",
+		"bot",
+		"bot's",
 		"chua",
 		"cocoapod",
 		"cocoapods",
@@ -8,6 +11,13 @@
 		"kachanovskyi",
 		"zanechua",
 		"zendesk",
+		"zendesk's",
 		"zopim"
-	]
+	],
+	"files.exclude": {
+		"**/.classpath": true,
+		"**/.project": true,
+		"**/.settings": true,
+		"**/.factorypath": true
+	}
 }

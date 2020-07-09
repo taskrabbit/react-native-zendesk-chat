@@ -1,17 +1,18 @@
 # react-native-zendesk-chat
 
-Simple module that allows displaying Zopim Chat from Zendesk for React Native.
+Simple module that supports displaying Zendesk Chat within a React Native Application.
+
+This library assumes you're familiar with Zendesk's Official Documentation: [iOS](https://developer.zendesk.com/embeddables/docs/chat-sdk-v-2-for-ios/introduction) and [Android](https://developer.zendesk.com/embeddables/docs/chat-sdk-v-2-for-android/introductionn).
 
 ## VERSIONS
 
-- For RN version higher than 0.59 use version >= 0.3.0 (Zendesk Chat v1)
-- For RN version lower than 0.59 use version <= 0.2.2 (Zendesk Chat v1)
+- For **Zendesk Chat v2** use version >= 0.4.0 (this requires RN 0.59 or later!)
+- For RN version >= 0.59 use version >= 0.3.0 (Zendesk Chat v1)
+- For RN version < 0.59 use version <= 0.2.2 (Zendesk Chat v1)
 
 ## Known Issues
 
 ## Getting Started
-
-Follow the instructions to install the SDK for [iOS](https://developer.zendesk.com/embeddables/docs/ios-chat-sdk/introduction) and [Android](https://developer.zendesk.com/embeddables/docs/android-chat-sdk/introduction).
 
 With npm:
 
@@ -33,7 +34,7 @@ $ (cd ios; pod install) # and see if there are any errors
 
 If you're on older react-native versions, please see the [Advanced Setup](#advanced-setup) section below
 
-**Android** If you're on react-native >= 0.60, Android should autodetect this dependency. You may need to call `react-native link`
+**Android** If you're on react-native >= 0.60, Android should autodetect this dependency. If you're on 0.59, you may need to call `react-native link`
 
 2. Call the JS Initializer:
 
@@ -54,8 +55,39 @@ ZendeskChat.startChat({
 	phone: user.mobile_phone,
 	tags: ["tag1", "tag2"],
 	department: "Your department",
+	// The behaviorFlags are optional, and each default to 'true' if omitted
+	behaviorFlags: {
+		showAgentAvailability: true,
+		showChatTranscriptPrompt: true,
+		showPreChatForm: true,
+		showOfflineForm: true,
+	},
+	// The preChatFormOptions are optional & each defaults to "optional" if omitted
+	preChatFormOptions: {
+		name: !user.full_name ? "required" : "optional",
+		email: "optional",
+		phone: "optional",
+		department: "required",
+	},
+	localizedDismissButtonTitle: "Dismiss",
 });
 ```
+
+### Styling
+
+Changing the UI Styling is mostly achieved through native techniques.
+
+On Android, this is the [official documentation](https://developer.zendesk.com/embeddables/docs/android-unified-sdk/customize_the_look#how-theming-works) -- and an example might be adding these [3 lines to your app theme](https://github.com/zendesk/sdk_demo_app_android/blob/ae4c551f78911e983b0aac06967628f46be15e54/app/src/main/res/values/styles.xml#L5-L7)
+
+While on iOS, the options are more minimal -- check the [official doc page](https://developer.zendesk.com/embeddables/docs/chat-sdk-v-2-for-ios/customize_the_look#styling-the-chat-screen)
+
+### Migrating
+
+_From react-native-zendesk-chat <= 0.3.0_
+
+To migrate from previous versions of the library, you should probably remove all integration steps you applied, and start over from the [Quick Start](#quickstart--usage).
+
+The JS API calls are very similar, with mostly additive changes.
 
 ### Advanced Setup
 
@@ -110,16 +142,28 @@ project(':react-native-zendesk-chat').projectDir = new File(rootProject.projectD
 
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
 
+For RN >= 0.60:
+
+```gradle
+dependencies {
+	//
+  api group: 'com.zendesk', name: 'chat', version: '2.2.0'
+  api group: 'com.zendesk', name: 'messaging', version: '4.3.1'
+```
+
+For RN < 0.60:
+
 ```gradle
 compile project(':react-native-zendesk-chat')
 ```
 
-4. Configure `ZopimChat` in `android/app/main/java/[...]/MainActivity.java`
+4. Configure `Chat` in `android/app/main/java/[...]/MainActivity.java`
 
 ```java
-// Note: there is a JS method to do this!
+// Note: there is a JS method to do this -- prefer doing that! -- This is for advanced users only.
+
 // Call this once in your Activity's bootup lifecycle
-ZopimChat.init("YOUR_ZENDESK_ACCOUNT_KEY").build();
+Chat.INSTANCE.init(mReactContext, key);
 ```
 
 ## TODO

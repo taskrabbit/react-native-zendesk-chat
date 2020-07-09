@@ -1,0 +1,4 @@
+.vscode/*
+.gitignore
+*.log
+.prettierrc.json

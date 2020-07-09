@@ -3,53 +3,192 @@
 //  Tasker
 //
 //  Created by Jean-Richard Lai on 11/23/15.
-//  Copyright © 2015 Facebook. All rights reserved.
 //
 
+
 #import "RNZendeskChatModule.h"
-#import <ZDCChat/ZDCChat.h>
+
+#import <React/RCTUtils.h>
+#import <React/RCTConvert.h>
+
+#import <ChatSDK/ChatSDK.h>
+#import <ChatProvidersSDK/ChatProvidersSDK.h>
+#import <MessagingSDK/MessagingSDK.h>
+#import <CommonUISDK/CommonUISDK.h>
+
+
+@implementation RCTConvert (ZDKChatFormFieldStatus)
+
+RCT_ENUM_CONVERTER(ZDKFormFieldStatus,
+				   (@{
+					   @"required": @(ZDKFormFieldStatusRequired),
+					   @"optional": @(ZDKFormFieldStatusOptional),
+					   @"hidden": @(ZDKFormFieldStatusHidden),
+					}),
+				   ZDKFormFieldStatusOptional,
+				   integerValue);
+
+@end
+
+@interface RNZendeskChatModule ()
+@end
 
 @implementation RNZendeskChatModule
+// Backwards compatibility with the unnecessary setVisitorInfo method
+ZDKChatAPIConfiguration *_visitorAPIConfig;
+
 
 RCT_EXPORT_MODULE(RNZendeskChatModule);
 
 RCT_EXPORT_METHOD(setVisitorInfo:(NSDictionary *)options) {
-  [ZDCChat updateVisitor:^(ZDCVisitorInfo *visitor) {
-    if (options[@"name"]) {
-      visitor.name = options[@"name"];
-    }
-    if (options[@"email"]) {
-      visitor.email = options[@"email"];
-    }
-    if (options[@"phone"]) {
-      visitor.phone = options[@"phone"];
-    }
-    visitor.shouldPersist = [options[@"shouldPersist"] boolValue] || NO;
-  }];
+	if (!NSThread.isMainThread) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self setVisitorInfo:options];
+		});
+		return;
+	}
+
+	ZDKChat.instance.configuration = _visitorAPIConfig = [self applyVisitorInfo:options intoConfig: _visitorAPIConfig ?: [[ZDKChatAPIConfiguration alloc] init]];
+}
+
+- (ZDKChatAPIConfiguration*)applyVisitorInfo:(NSDictionary*)options intoConfig:(ZDKChatAPIConfiguration*)config {
+	if (options[@"department"]) {
+		config.department = options[@"department"];
+	}
+	if (options[@"tags"]) {
+		config.tags = options[@"tags"];
+	}
+	config.visitorInfo = [[ZDKVisitorInfo alloc] initWithName:options[@"name"]
+														email:options[@"email"]
+												  phoneNumber:options[@"phone"]];
+
+	NSLog(@"[RNZendeskChatModule] Applied visitor info: department: %@ tags: %@, email: %@, name: %@, phone: %@", config.department, config.tags, config.visitorInfo.email, config.visitorInfo.name, config.visitorInfo.phoneNumber);
+	return config;
+}
+
+#define RNZDKConfigHashErrorLog(options, what)\
+if (!!options) {\
+	NSLog(@"[RNZendeskChatModule] Invalid %@ -- expected a config hash", what);\
+}
+
+- (ZDKMessagingConfiguration *)messagingConfigurationFromConfig:(NSDictionary*)options {
+	ZDKMessagingConfiguration *config = [[ZDKMessagingConfiguration alloc] init];
+	if (!options || ![options isKindOfClass:NSDictionary.class]) {
+		RNZDKConfigHashErrorLog(options, @"MessagingConfiguration config options");
+		return config;
+	}
+	if (options[@"botName"]) {
+		config.name = options[@"botName"];
+	}
+
+	if (options[@"botAvatarName"]) {
+		config.botAvatar = [UIImage imageNamed:@"botAvatarName"];
+	} else if (options[@"botAvatarUrl"]) {
+		config.botAvatar = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:options[@"botAvatarUrl"]]]];
+	}
+
+	return config;
+}
+
+- (ZDKChatFormConfiguration * _Nullable)preChatFormConfigurationFromConfig:(NSDictionary*)options {
+	if (!options || ![options isKindOfClass:NSDictionary.class]) {
+		RNZDKConfigHashErrorLog(options, @"pre-Chat-Form Configuration Options");
+		return nil;
+	}
+#define ParseFormFieldStatus(key)\
+	ZDKFormFieldStatus key = [RCTConvert ZDKFormFieldStatus:options[@"" #key]]
+	ParseFormFieldStatus(name);
+	ParseFormFieldStatus(email);
+	ParseFormFieldStatus(phone);
+	ParseFormFieldStatus(department);
+#undef ParseFormFieldStatus
+	return [[ZDKChatFormConfiguration alloc] initWithName:name
+													email:email
+											  phoneNumber:phone
+											   department:department];
+}
+- (ZDKChatConfiguration *)chatConfigurationFromConfig:(NSDictionary*)options {
+	options = options ?: @{};
+
+	ZDKChatConfiguration* config = [[ZDKChatConfiguration alloc] init];
+	if (![options isKindOfClass:NSDictionary.class]){
+		RNZDKConfigHashErrorLog(options, @"Chat Configuration Options");
+		return config;
+	}
+	NSDictionary * behaviorFlags = options[@"behaviorFlags"];
+	if (!behaviorFlags || ![behaviorFlags isKindOfClass:NSDictionary.class]) {
+		RNZDKConfigHashErrorLog(behaviorFlags, @"BehaviorFlags -- expected a config hash");
+		behaviorFlags = NSDictionary.dictionary;
+	}
+
+#define ParseBehaviorFlag(key, target)\
+config.target = [RCTConvert BOOL: behaviorFlags[@"" #key] ?: @YES]
+	ParseBehaviorFlag(showPreChatForm, isPreChatFormEnabled);
+	ParseBehaviorFlag(showChatTranscriptPrompt, isChatTranscriptPromptEnabled);
+	ParseBehaviorFlag(showOfflineForm, isOfflineFormEnabled);
+	ParseBehaviorFlag(showAgentAvailability, isAgentAvailabilityEnabled);
+#undef ParseBehaviorFlag
+
+	if (config.isPreChatFormEnabled) {
+		ZDKChatFormConfiguration * formConfig = [self preChatFormConfigurationFromConfig:options[@"preChatFormOptions"]];
+		if (!!formConfig) {
+			// Zendesk Swift Code crashes if you provide a nil form
+			config.preChatFormConfiguration = formConfig;
+		}
+	}
+	return config;
 }
 
 RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
-  [self setVisitorInfo:options];
+	if (!options || ![options isKindOfClass: NSDictionary.class]) {
+		if (!!options){
+			NSLog(@"[RNZendeskChatModule] Invalid JS startChat Configuration Options -- expected a config hash");
+		}
+		options = NSDictionary.dictionary;
+	}
 
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    [ZDCChat startChat:^(ZDCConfig *config) {
-      if (options[@"department"]) {
-        config.department = options[@"department"];
-      }
-      if (options[@"tags"]) {
-        config.tags = options[@"tags"];
-      }
-      config.preChatDataRequirements.name       = ZDCPreChatDataRequired;
-      config.preChatDataRequirements.email      = options[@"emailNotRequired"] ? ZDCPreChatDataNotRequired : ZDCPreChatDataRequired;
-      config.preChatDataRequirements.phone      = options[@"phoneNotRequired"] ? ZDCPreChatDataNotRequired : ZDCPreChatDataRequired;
-      config.preChatDataRequirements.department = options[@"departmentNotRequired"] ? ZDCPreChatDataNotRequired : ZDCPreChatDataRequiredEditable;
-      config.preChatDataRequirements.message    = options[@"messageNotRequired"] ? ZDCPreChatDataNotRequired : ZDCPreChatDataRequired;
-    }];
-  });
+	dispatch_sync(dispatch_get_main_queue(), ^{
+
+		ZDKChat.instance.configuration = [self applyVisitorInfo:options
+													 intoConfig: _visitorAPIConfig ?: [[ZDKChatAPIConfiguration alloc] init]];
+
+		ZDKChatConfiguration * chatConfig = [self chatConfigurationFromConfig:options];
+
+		NSError *error = nil;
+		NSArray *engines = @[
+			[ZDKChatEngine engineAndReturnError:&error]
+		];
+		if (!!error) {
+			NSLog(@"[RNZendeskChatModule] Internal Error loading ZDKChatEngine %@", error);
+			return;
+		}
+
+		ZDKMessagingConfiguration *messagingConfig = [self messagingConfigurationFromConfig: options[@"messagingOptions"]];
+
+		UIViewController *viewController = [ZDKMessaging.instance buildUIWithEngines:engines
+																 configs:@[chatConfig, messagingConfig]
+																   error:&error];
+		if (!!error) {
+			NSLog(@"[RNZendeskChatModule] Internal Error building ZDKMessagingUI %@",error);
+			return;
+		}
+
+		viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle: options[@"localizedDismissButtonTitle"] ?: @"Close"
+																						   style: UIBarButtonItemStylePlain
+																						  target: self
+																						  action: @selector(dismissChatUI)];
+
+		UINavigationController *chatController = [[UINavigationController alloc] initWithRootViewController: viewController];
+		[RCTPresentedViewController() presentViewController:chatController animated:YES completion:nil];
+	});
+}
+
+- (void) dismissChatUI {
+	[RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
 }
 
 RCT_EXPORT_METHOD(init:(NSString *)zenDeskKey) {
-  [ZDCChat initializeWithAccountKey:zenDeskKey];
+	[ZDKChat initializeWithAccountKey:zenDeskKey queue:dispatch_get_main_queue()];
 }
 
 @end
