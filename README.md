@@ -166,11 +166,12 @@ compile project(':react-native-zendesk-chat')
 Chat.INSTANCE.init(mReactContext, key);
 ```
 
-## TODO
+## Contributing
 
-- Allow setting form configuration from JS
-- Add examples
+- Pull Requests are encouraged!
+- Be respectful!
+- The trunk branch of this repo is called `main`
 
 ## License
 
-React Native is MIT licensed, as found in the [LICENSE](https://github.com/taskrabbit/react-native-zendesk-chat/LICENSE) file.
+React Native Zendesk Chat is MIT licensed, as found in the [LICENSE](https://github.com/taskrabbit/react-native-zendesk-chat/LICENSE) file.
