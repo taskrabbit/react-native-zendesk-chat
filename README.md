@@ -43,6 +43,9 @@ import ZendeskChat from "react-native-zendesk-chat";
 
 // Once in your application:
 ZendeskChat.init("YOUR_ZENDESK_ACCOUNT_KEY");
+
+// Optionally specify the appId provided by Zendesk
+ZendeskChat.init("YOUR_ZENDESK_ACCOUNT_KEY", "APP_ID_PROVIDED_BY_ZENDESK");
 ```
 
 3. Show the Chat UI
