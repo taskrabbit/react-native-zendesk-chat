@@ -169,7 +169,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void init(String key, String appId) {
-        if (appId) {
+        if (appId != null) {
             Chat.INSTANCE.init(mReactContext, key, appId);
         } else {
             Chat.INSTANCE.init(mReactContext, key);
