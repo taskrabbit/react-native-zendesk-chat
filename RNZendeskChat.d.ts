@@ -80,6 +80,11 @@ declare module "react-native-zendesk-chat" {
 		 * - So you should probably prefer that method
 		 */
 		setVisitorInfo: (options: VisitorInfoOptions) => void;
+
+		/**
+		 * Configure the token to start receiving Push Notifications
+		 */
+		registerPushToken: (token: string) => void;
 	}
 
 	const RNZendeskChatModule: RNZendeskChatModuleImpl;

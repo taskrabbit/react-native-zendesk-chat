@@ -275,4 +275,13 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             Log.e(TAG, "Could not load getCurrentActivity -- no UI can be displayed without it.");
         }
     }
+
+	@ReactMethod
+    public void registerPushToken(String token) {
+		PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationProvider();
+
+		if (pushProvider != null) {
+			pushProvider.registerPushToken(token);
+		}
+    }
 }
