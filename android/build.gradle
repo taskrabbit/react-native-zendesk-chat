@@ -37,6 +37,6 @@ repositories {
 dependencies {
   implementation "com.facebook.react:react-native:+"
 
-  api group: 'com.zendesk', name: 'chat', version: safeExtGet('zendeskChatVersion', '2.2.0')
-  api group: 'com.zendesk', name: 'messaging', version: safeExtGet('zendeskMessagingVersion', '4.3.1')
+  api group: 'com.zendesk', name: 'chat', version: safeExtGet('zendeskChatVersion', '3.1.0')
+  api group: 'com.zendesk', name: 'messaging', version: safeExtGet('zendeskMessagingVersion', '5.1.0')
 }
