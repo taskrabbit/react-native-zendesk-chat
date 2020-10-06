@@ -150,7 +150,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         }
         String email = getStringOrNull(options, "email", "visitorInfo");
         if (email != null) {
-            builder = builder.withEmail(name);
+            builder = builder.withEmail(email);
         }
         String phone = getStringOrNull(options, "phone", "visitorInfo");
         if (phone != null) {
