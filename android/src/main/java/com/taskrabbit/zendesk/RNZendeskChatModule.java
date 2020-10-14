@@ -13,6 +13,10 @@ import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableNativeMap;
 import zendesk.chat.Chat;
 import zendesk.chat.ChatConfiguration;
+import zendesk.chat.ChatSessionStatus;
+import zendesk.chat.ChatState;
+import zendesk.chat.ObservationScope;
+import zendesk.chat.Observer;
 import zendesk.chat.ProfileProvider;
 import zendesk.chat.PreChatFormFieldStatus;
 import zendesk.chat.ChatEngine;
@@ -27,6 +31,10 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     private static final String TAG = "[RNZendeskChatModule]";
 
     private ArrayList<String> currentUserTags = new ArrayList();
+
+    private boolean visitorSet = false;
+    private ProfileProvider profileProvider;
+    private VisitorInfo visitorInfo;
 
     // private class Converters {
     public static ArrayList<String> getArrayListOfStrings(ReadableMap options, String key, String functionHint) {
@@ -157,14 +165,16 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             builder = builder.withPhoneNumber(phone);
         }
 
-        VisitorInfo visitorData = builder.build();
+        visitorInfo = builder.build();
 
         if (Chat.INSTANCE.providers() == null) {
             Log.e(TAG,
                     "Zendesk Internals are undefined -- did you forget to call RNZendeskModule.init(<account_key>)?");
             return;
         }
-        Chat.INSTANCE.providers().profileProvider().setVisitorInfo(visitorData, null);
+
+        profileProvider = Chat.INSTANCE.providers().profileProvider();
+        profileProvider.setVisitorInfo(visitorInfo, null);
     }
 
     @ReactMethod
@@ -251,6 +261,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             return;
         }
         setVisitorInfo(options);
+        setupObserver();
 
         ReadableMap flagHash = RNZendeskChatModule.getReadableMap(options, "behaviorFlags", "startChat");
         boolean showPreChatForm = getBooleanOrDefault(flagHash, "showPreChatForm", "startChat(behaviorFlags)", true);
@@ -287,5 +298,28 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         if (pushProvider != null) {
             pushProvider.registerPushToken(token);
         }
+    }
+    
+    public void setupObserver(){
+        final ObservationScope observationScope = new ObservationScope();
+        Chat.INSTANCE.providers().chatProvider().observeChatState(observationScope, new Observer<ChatState>() {
+            @Override
+            public void update(ChatState chatState) {
+                ChatSessionStatus chatStatus = chatState.getChatSessionStatus();
+                // Status achieved after the PreChatForm is completed
+                if (chatStatus == ChatSessionStatus.STARTED) {
+                    // Update the information MID chat here. All info but Department can be updated
+                    if (!visitorSet) {
+                        // Add here the code to set the visitor info - visitorInfo would be a VisitorInfo type variable containing all the information to set
+                        profileProvider.setVisitorInfo(visitorInfo, null);
+                        visitorSet = true;
+                    }
+
+                } else {
+                    // There are few other statuses that you can observe but they are unused in this example
+                    Log.d(TAG, "[observerSetup] - ChatSessionUpdate -> (unused) status : " + chatStatus.toString());
+                }
+            }
+        });
     }
 }
