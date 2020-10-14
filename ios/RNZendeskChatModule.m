@@ -192,7 +192,9 @@ RCT_EXPORT_METHOD(init:(NSString *)zenDeskKey) {
 }
 
 RCT_EXPORT_METHOD(registerPushToken:(NSString *)token) {
-	[ZDKChat registerPushToken:[RCTConvert NSData:token]];
+	dispatch_sync(dispatch_get_main_queue(), ^{
+		[ZDKChat registerPushToken:[RCTConvert NSData:token]];
+	});
 }
 
 @end
