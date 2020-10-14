@@ -276,12 +276,12 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         }
     }
 
-	@ReactMethod
+    @ReactMethod
     public void registerPushToken(String token) {
-		PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationProvider();
+        PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationProvider();
 
-		if (pushProvider != null) {
-			pushProvider.registerPushToken(token);
-		}
+        if (pushProvider != null) {
+            pushProvider.registerPushToken(token);
+        }
     }
 }
