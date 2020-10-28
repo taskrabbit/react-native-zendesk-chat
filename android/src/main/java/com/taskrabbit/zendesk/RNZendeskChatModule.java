@@ -194,8 +194,16 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         return anyValuesWereSet;
     }
 
+    // Unfortunately, react-native: android doesn't support the following
+    // - Java's Method Overloading
+    // - automatically providing null to undefined parameters (like iOS)
+    //
+    // As a result, we need to guarantee this is always called with 2 parameters from JS
+    //
+    // This method has been renamed to make that clear, and index.js is adding the
+    //  correct interface for init() at runtime
     @ReactMethod
-    public void init(String key, String appId) {
+    public void _initWith2Args(String key, String appId) {
         if (appId != null) {
             Chat.INSTANCE.init(mReactContext, key, appId);
         } else {
