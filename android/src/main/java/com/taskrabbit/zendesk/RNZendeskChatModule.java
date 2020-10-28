@@ -136,11 +136,12 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     }
 
     private void selectVisitorInfoFieldIfPreChatFormHidden(String key, WritableNativeMap output, ReadableMap input, ReadableMap shouldInclude) {
-        if (!input.hasKey(key)
-            || input.getType(key) != ReadableType.String
-            || (shouldInclude.hasKey(key) && shouldInclude.getType(key) == ReadableType.String && shouldInclude.getString(key) != "hidden") ) {
+        if ((!input.hasKey(key) || input.getType(key) != ReadableType.String)
+            || (shouldInclude.hasKey(key) && shouldInclude.getType(key) == ReadableType.String && !"hidden".equals(shouldInclude.getString(key))) ) {
             return;
         }
+
+        Log.d(TAG, "selectVisitorInfo to set later " + key + " "+ input.getString(key));
         output.putString(key, input.getString(key));
     }
     // }
@@ -358,6 +359,8 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
                     // Add here the code to set the selected visitor info *after* the preChatForm is complete
                     _setVisitorInfo(pendingVisitorInfo);
                     pendingVisitorInfo = null;
+
+                    Log.d(TAG, "Set the VisitorInfo after chat start");
                 } else {
                     // There are few other statuses that you can observe but they are unused in this example
                     Log.d(TAG, "[observerSetup] - ChatSessionUpdate -> (unused) status : " + chatStatus.toString());
