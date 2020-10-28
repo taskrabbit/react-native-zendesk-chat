@@ -19,6 +19,7 @@ import zendesk.chat.ObservationScope;
 import zendesk.chat.Observer;
 import zendesk.chat.ProfileProvider;
 import zendesk.chat.PreChatFormFieldStatus;
+import zendesk.chat.PushNotificationsProvider;
 import zendesk.chat.ChatEngine;
 import zendesk.chat.VisitorInfo;
 import zendesk.messaging.MessagingActivity;
@@ -324,13 +325,13 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void registerPushToken(String token) {
-        PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationProvider();
+        PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationsProvider();
 
         if (pushProvider != null) {
             pushProvider.registerPushToken(token);
         }
     }
-    
+
     // https://support.zendesk.com/hc/en-us/articles/360055343673
     public void setupChatStartObserverToSetVisitorInfo(){
         // Create a temporary observation scope until the chat is started.
