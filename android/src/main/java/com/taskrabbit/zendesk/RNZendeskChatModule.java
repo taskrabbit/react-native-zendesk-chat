@@ -13,6 +13,10 @@ import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableNativeMap;
 import zendesk.chat.Chat;
 import zendesk.chat.ChatConfiguration;
+import zendesk.chat.ChatSessionStatus;
+import zendesk.chat.ChatState;
+import zendesk.chat.ObservationScope;
+import zendesk.chat.Observer;
 import zendesk.chat.ProfileProvider;
 import zendesk.chat.PreChatFormFieldStatus;
 import zendesk.chat.ChatEngine;
@@ -27,6 +31,9 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     private static final String TAG = "[RNZendeskChatModule]";
 
     private ArrayList<String> currentUserTags = new ArrayList();
+
+    private ReadableMap pendingVisitorInfo = null;
+    private ObservationScope observationScope = null;
 
     // private class Converters {
     public static ArrayList<String> getArrayListOfStrings(ReadableMap options, String key, String functionHint) {
@@ -126,6 +133,15 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         }
         return options.getMap(key);
     }
+
+    private void selectVisitorInfoFieldIfPreChatFormHidden(String key, WritableNativeMap output, ReadableMap input, ReadableMap shouldInclude) {
+        if (!input.hasKey(key)
+            || input.getType(key) != ReadableType.String
+            || (shouldInclude.hasKey(key) && shouldInclude.getType(key) == ReadableType.String && shouldInclude.getString(key) != "hidden") ) {
+            return;
+        }
+        output.putString(key, input.getString(key));
+    }
     // }
 
     private ReactContext mReactContext;
@@ -142,29 +158,39 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setVisitorInfo(ReadableMap options) {
+        _setVisitorInfo(options);
+    }
+    private boolean _setVisitorInfo(ReadableMap options) {
+        boolean anyValuesWereSet = false;
         VisitorInfo.Builder builder = VisitorInfo.builder();
 
         String name = getStringOrNull(options, "name", "visitorInfo");
         if (name != null) {
             builder = builder.withName(name);
+            anyValuesWereSet = true;
         }
         String email = getStringOrNull(options, "email", "visitorInfo");
         if (email != null) {
             builder = builder.withEmail(email);
+            anyValuesWereSet = true;
         }
         String phone = getStringOrNull(options, "phone", "visitorInfo");
         if (phone != null) {
             builder = builder.withPhoneNumber(phone);
+            anyValuesWereSet = true;
         }
 
-        VisitorInfo visitorData = builder.build();
+        VisitorInfo visitorInfo = builder.build();
 
         if (Chat.INSTANCE.providers() == null) {
             Log.e(TAG,
                     "Zendesk Internals are undefined -- did you forget to call RNZendeskModule.init(<account_key>)?");
-            return;
+            return false;
         }
-        Chat.INSTANCE.providers().profileProvider().setVisitorInfo(visitorData, null);
+
+        Chat.INSTANCE.providers().profileProvider().setVisitorInfo(visitorInfo, null);
+
+        return anyValuesWereSet;
     }
 
     @ReactMethod
@@ -194,6 +220,14 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
                 .withEmailFieldStatus(getFieldStatusOrDefault(options, "email", defaultValue))
                 .withPhoneFieldStatus(getFieldStatusOrDefault(options, "phone", defaultValue))
                 .withDepartmentFieldStatus(getFieldStatusOrDefault(options, "department", defaultValue));
+    }
+    // Produces a ReadableMap suitable for passing to setVisitorInfo that only has the fields that won't be asked by the preChatForm
+    private ReadableMap hiddenVisitorInfoData(ReadableMap allVisitorInfo, ReadableMap preChatFormOptions) {
+        WritableNativeMap output = new WritableNativeMap();
+        selectVisitorInfoFieldIfPreChatFormHidden("email", output, allVisitorInfo, preChatFormOptions);
+        selectVisitorInfoFieldIfPreChatFormHidden("name", output, allVisitorInfo, preChatFormOptions);
+        selectVisitorInfoFieldIfPreChatFormHidden("phone", output, allVisitorInfo, preChatFormOptions);
+        return output;
     }
 
     private void loadTags(ReadableMap options) {
@@ -250,15 +284,19 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
                     "Zendesk Internals are undefined -- did you forget to call RNZendeskModule.init(<account_key>)?");
             return;
         }
-        setVisitorInfo(options);
+        pendingVisitorInfo = null;
+        boolean didSetVisitorInfo = _setVisitorInfo(options);
 
         ReadableMap flagHash = RNZendeskChatModule.getReadableMap(options, "behaviorFlags", "startChat");
+
         boolean showPreChatForm = getBooleanOrDefault(flagHash, "showPreChatForm", "startChat(behaviorFlags)", true);
+        boolean needsToSetVisitorInfoAfterChatStart = showPreChatForm && didSetVisitorInfo;
 
         ChatConfiguration.Builder chatBuilder = loadBehaviorFlags(ChatConfiguration.builder(), flagHash);
         if (showPreChatForm) {
-            chatBuilder = loadPreChatFormConfiguration(chatBuilder,
-                    getReadableMap(options, "preChatFormOptions", "startChat"));
+            ReadableMap preChatFormOptions = getReadableMap(options, "preChatFormOptions", "startChat");
+            chatBuilder = loadPreChatFormConfiguration(chatBuilder, preChatFormOptions);
+            pendingVisitorInfo = hiddenVisitorInfoData(options, preChatFormOptions);
         }
         ChatConfiguration chatConfig = chatBuilder.build();
 
@@ -271,6 +309,10 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
 
         MessagingConfiguration.Builder messagingBuilder = loadBotSettings(
                 getReadableMap(options, "messagingOptions", "startChat"), MessagingActivity.builder());
+
+        if (needsToSetVisitorInfoAfterChatStart) {
+            setupChatStartObserverToSetVisitorInfo();
+        }
 
         Activity activity = getCurrentActivity();
         if (activity != null) {
@@ -287,5 +329,31 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         if (pushProvider != null) {
             pushProvider.registerPushToken(token);
         }
+    }
+    
+    // https://support.zendesk.com/hc/en-us/articles/360055343673
+    public void setupChatStartObserverToSetVisitorInfo(){
+        // Create a temporary observation scope until the chat is started.
+        observationScope = new ObservationScope();
+        Chat.INSTANCE.providers().chatProvider().observeChatState(observationScope, new Observer<ChatState>() {
+            @Override
+            public void update(ChatState chatState) {
+                ChatSessionStatus chatStatus = chatState.getChatSessionStatus();
+                // Status achieved after the PreChatForm is completed
+                if (chatStatus == ChatSessionStatus.STARTED) {
+                    observationScope.cancel(); // Once the chat is started disable the observation
+                    observationScope = null; // Clean things up to avoid confusion.
+                    if (pendingVisitorInfo == null) { return; }
+
+                    // Update the information MID chat here. All info but Department can be updated
+                    // Add here the code to set the selected visitor info *after* the preChatForm is complete
+                    _setVisitorInfo(pendingVisitorInfo);
+                    pendingVisitorInfo = null;
+                } else {
+                    // There are few other statuses that you can observe but they are unused in this example
+                    Log.d(TAG, "[observerSetup] - ChatSessionUpdate -> (unused) status : " + chatStatus.toString());
+                }
+            }
+        });
     }
 }

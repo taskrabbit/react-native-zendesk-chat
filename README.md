@@ -120,7 +120,7 @@ In Xcode, drag and drop `node_modules/react-native-zendesk-chat/RNZendeskChat.m`
 // ...
 
 // Inside the appropriate appDidFinishLaunching method
-[ZDCChat initializeWithAccountKey:@"YOUR_ZENDESK_ACCOUNT_KEY"];
+[ZDCChat initializeWithAccountKey:@"YOUR_ZENDESK_ACCOUNT_KEY" appId:"YOUR_ZENDESK_APP_ID"];
 
 // And access other interesting APIs
 ```
@@ -166,7 +166,7 @@ compile project(':react-native-zendesk-chat')
 // Note: there is a JS method to do this -- prefer doing that! -- This is for advanced users only.
 
 // Call this once in your Activity's bootup lifecycle
-Chat.INSTANCE.init(mReactContext, key);
+Chat.INSTANCE.init(mReactContext, key, appId);
 ```
 
 ## Contributing
