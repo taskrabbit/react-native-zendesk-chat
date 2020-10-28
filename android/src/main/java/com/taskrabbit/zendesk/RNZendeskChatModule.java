@@ -141,7 +141,15 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        Log.d(TAG, "selectVisitorInfo to set later " + key + " "+ input.getString(key));
+        String value = input.getString(key);
+        if (((mReactContext.getApplicationInfo().flags
+            & ApplicationInfo.FLAG_DEBUGGABLE) == 0)) {
+            // We don't want other Apps to monitor our app's production logs for this debug information.
+            // If you patch the app to enable it yourself, that's your choice!
+            value = "<stripped>";
+        }
+
+        Log.d(TAG, "selectVisitorInfo to set later " + key + " '" + value + "'");
         output.putString(key, input.getString(key));
     }
     // }
