@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A73FC0C42550745000B7EC05 /* jwtAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73FC0C32550745000B7EC05 /* jwtAuth.swift */; };
 		B6462ECD1C603E5C0010294B /* RNZendeskChatModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B6462ECC1C603E5C0010294B /* RNZendeskChatModule.m */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A73FC0C22550745000B7EC05 /* RNZendeskChat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNZendeskChat-Bridging-Header.h"; sourceTree = "<group>"; };
+		A73FC0C32550745000B7EC05 /* jwtAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jwtAuth.swift; sourceTree = "<group>"; };
 		B6462EBF1C603E340010294B /* libRNZendeskChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNZendeskChat.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6462ECB1C603E5C0010294B /* RNZendeskChatModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNZendeskChatModule.h; sourceTree = "<group>"; };
 		B6462ECC1C603E5C0010294B /* RNZendeskChatModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNZendeskChatModule.m; sourceTree = "<group>"; };
@@ -42,9 +45,11 @@
 		B6462EB61C603E340010294B = {
 			isa = PBXGroup;
 			children = (
+				A73FC0C32550745000B7EC05 /* jwtAuth.swift */,
 				B6462ECB1C603E5C0010294B /* RNZendeskChatModule.h */,
 				B6462ECC1C603E5C0010294B /* RNZendeskChatModule.m */,
 				B6462EC01C603E340010294B /* Products */,
+				A73FC0C22550745000B7EC05 /* RNZendeskChat-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,6 +92,7 @@
 				TargetAttributes = {
 					B6462EBE1C603E340010294B = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 1200;
 					};
 				};
 			};
@@ -95,6 +101,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = B6462EB61C603E340010294B;
@@ -113,6 +120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6462ECD1C603E5C0010294B /* RNZendeskChatModule.m in Sources */,
+				A73FC0C42550745000B7EC05 /* jwtAuth.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,30 +210,39 @@
 		B6462EC91C603E340010294B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNZendeskChat-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		B6462ECA1C603E340010294B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNZendeskChat-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

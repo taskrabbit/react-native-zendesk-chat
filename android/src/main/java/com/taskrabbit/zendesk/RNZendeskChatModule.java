@@ -13,6 +13,7 @@ import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableNativeMap;
 import zendesk.chat.Chat;
 import zendesk.chat.ChatConfiguration;
+import zendesk.chat.JwtAuthenticator;
 import zendesk.chat.ProfileProvider;
 import zendesk.chat.PreChatFormFieldStatus;
 import zendesk.chat.ChatEngine;
@@ -144,12 +145,6 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setUserIdentity(ReadableMap options) {
-        Identity identity = new JwtIdentity(options.getString("token"));
-        Zendesk.INSTANCE.setIdentity(identity);
-    }
-
-    @ReactMethod
     public void setVisitorInfo(ReadableMap options) {
         VisitorInfo.Builder builder = VisitorInfo.builder();
 
@@ -177,12 +172,10 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void init(String key, String appId) {
-        if (appId != null) {
-            Chat.INSTANCE.init(mReactContext, key, appId);
-        } else {
-            Chat.INSTANCE.init(mReactContext, key);
-        }
+    public void init(String key, String AlfZendeskJwtUrl) {
+        Chat.INSTANCE.init(mReactContext, key);
+        JwtAuthenticator jwtAuth = new JwtAuth(AlfZendeskJwtUrl);
+        Chat.INSTANCE.setIdentity(jwtAuth);
         Log.d(TAG, "Chat.INSTANCE was properly initialized from JS.");
     }
 
@@ -201,8 +194,8 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         PreChatFormFieldStatus defaultValue = PreChatFormFieldStatus.OPTIONAL;
         return b.withNameFieldStatus(getFieldStatusOrDefault(options, "name", defaultValue))
                 .withEmailFieldStatus(getFieldStatusOrDefault(options, "email", defaultValue))
-                .withPhoneFieldStatus(getFieldStatusOrDefault(options, "phone", defaultValue))
-                .withDepartmentFieldStatus(getFieldStatusOrDefault(options, "department", defaultValue));
+                .withPhoneFieldStatus(getFieldStatusOrDefault(options, "phone", defaultValue));
+                //.withDepartmentFieldStatus(getFieldStatusOrDefault(options, "department", defaultValue));
     }
 
     private void loadTags(ReadableMap options) {
