@@ -77,7 +77,7 @@ ZendeskChat.startChat({
 ```
 
 
-### Optaining the `YOUR_ZENDESK_ACCOUNT_KEY`
+### Obtaining the `YOUR_ZENDESK_ACCOUNT_KEY`
 To optain your zendesk account key see the instructions in [Initializing the SDK](https://api.zopim.com/web-sdk/#initializing-the-sdk) in the Zendesk SDK.
 
 To get your account key, follow these steps:
