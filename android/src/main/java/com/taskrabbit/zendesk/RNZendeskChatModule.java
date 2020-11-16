@@ -3,7 +3,6 @@ package com.taskrabbit.zendesk;
 import android.app.Activity;
 import android.util.Log;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -247,7 +246,7 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startChat(ReadableMap options, Callback onSuccessCallback) {
+    public void startChat(ReadableMap options) {
         if (Chat.INSTANCE.providers() == null) {
             Log.e(TAG,
                     "Zendesk Internals are undefined -- did you forget to call RNZendeskModule.init(<account_key>)?");
@@ -278,7 +277,6 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         Activity activity = getCurrentActivity();
         if (activity != null) {
             messagingBuilder.withEngines(ChatEngine.engine()).show(activity, chatConfig);
-            onSuccessCallback.invoke("success");
         } else {
             Log.e(TAG, "Could not load getCurrentActivity -- no UI can be displayed without it.");
         }
