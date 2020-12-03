@@ -1,6 +1,7 @@
 package com.taskrabbit.zendesk;
 
 import android.app.Activity;
+import android.content.pm.ApplicationInfo;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
