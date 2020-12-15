@@ -153,7 +153,11 @@ dependencies {
   api group: 'com.zendesk', name: 'chat', version: '2.2.0'
   api group: 'com.zendesk', name: 'messaging', version: '4.3.1'
 ```
+also in project build.gradle 
 
+ Add ```gradle
+  maven { url 'https://zendesk.jfrog.io/zendesk/repo' }```
+     
 For RN < 0.60:
 
 ```gradle
