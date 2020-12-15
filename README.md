@@ -155,7 +155,8 @@ dependencies {
 ```
 also in project build.gradle 
 
- Add ```maven { url 'https://zendesk.jfrog.io/zendesk/repo' }```
+ Add ```gradle
+  maven { url 'https://zendesk.jfrog.io/zendesk/repo' }```
      
 For RN < 0.60:
 
