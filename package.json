@@ -6,7 +6,7 @@
 	"types": "RNZendeskChat.d.ts",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/taskrabbit/react-native-zendesk-chat"
+		"url": "https://github.com/tinni95/react-native-zendesk-chat"
 	},
 	"scripts": {
 		"prettier": "prettier",

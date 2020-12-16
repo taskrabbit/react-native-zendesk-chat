@@ -4,10 +4,8 @@
 //
 //  Created by Jean-Richard Lai on 11/23/15.
 //
-
-
+#import "ZDKJWTAuth.h"
 #import "RNZendeskChatModule.h"
-
 #import <React/RCTUtils.h>
 #import <React/RCTConvert.h>
 
@@ -188,11 +186,10 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
 }
 
 RCT_EXPORT_METHOD(init:(NSString *)zenDeskKey appId:(NSString *)appId) {
-	if (appId) {
-		[ZDKChat initializeWithAccountKey:zenDeskKey appId:appId queue:dispatch_get_main_queue()];
-	} else {
 		[ZDKChat initializeWithAccountKey:zenDeskKey queue:dispatch_get_main_queue()];
-	}
+    ZDKJWTAuth *authenticator = [ZDKJWTAuth new];
+    [authenticator setUrl:appId];
+    [ZDKChat.instance setIdentityWithAuthenticator:authenticator];
 }
 
 RCT_EXPORT_METHOD(registerPushToken:(NSString *)token) {
