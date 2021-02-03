@@ -11,6 +11,10 @@ RNZendeskChatModule.init = (key, appId) => {
 	return RNZendeskChatModule._initWith2Args(key, appId || null);
 };
 
+RNZendeskChatModule.sendOfflineForm = (message, visitorInfo, departmentId) => {
+	return RNZendeskChatModule._sendOfflineFormWith3Args(message, visitorInfo || {}, departmentId || null);
+};
+
 /**
  * TypeScript Documentation for this Module describes the available methods & parameters
  *

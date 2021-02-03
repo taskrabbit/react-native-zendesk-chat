@@ -30,6 +30,18 @@ RCT_ENUM_CONVERTER(ZDKFormFieldStatus,
 
 @end
 
+@implementation RCTConvert (ZDKRating)
+
+RCT_ENUM_CONVERTER(ZDKRating
+,
+                   (@{
+                       @"good": @(ZDKRatingGood),
+                       @"bad": @(ZDKRatingBad),
+                    }),
+                   ZDKRatingNone,
+                   integerValue);
+@end
+
 @interface RNZendeskChatModule ()
 @end
 
@@ -199,6 +211,86 @@ RCT_EXPORT_METHOD(registerPushToken:(NSString *)token) {
 	dispatch_sync(dispatch_get_main_queue(), ^{
 		[ZDKChat registerPushTokenString:token];
 	});
+}
+
+RCT_EXPORT_METHOD(sendMessage: (NSString*)message
+		resolver:(RCTPromiseResolveBlock)resolve
+		rejecter:(RCTPromiseRejectBlock)reject
+	) {
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			[ZDKChat.chatProvider sendMessage:message completion:^(NSString *messageId, NSError *error) {
+				if (error) {
+					reject(@"error", @"no message id returned", error);
+				} else {
+					resolve(messageId);
+				}
+			}];
+		});
+}
+
+RCT_EXPORT_METHOD(sendChatRating: (NSString*)rating
+		resolver:(RCTPromiseResolveBlock)resolve
+		rejecter:(RCTPromiseRejectBlock)reject
+	) {
+        ZDKRating convertedRating = [RCTConvert ZDKRating:rating];
+
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			[ZDKChat.chatProvider sendChatRating:convertedRating completion:^(ZDKRating _rating, NSError *error) {
+				if (error) {
+					reject(@"error", @"no rating returned", error);
+				} else {
+					resolve(rating);
+				}
+			}];
+		});
+}
+
+RCT_EXPORT_METHOD(endChat: (RCTPromiseResolveBlock)resolve
+		rejecter:(RCTPromiseRejectBlock)reject
+	) {
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			[ZDKChat.chatProvider endChat:^(BOOL didEndChat, NSError *error) {
+				if (didEndChat) {
+					resolve(didEndChat ? @"true" : @"false");
+				} else {
+					reject(@"error", @"chat no ended", error);
+				}
+			}];
+		});
+}
+
+RCT_EXPORT_METHOD(_sendOfflineFormWith3Args:(NSString *)message visitorInfo:(NSDictionary *)visitorInfo departmentId:(NSString *)departmentId
+		resolver:(RCTPromiseResolveBlock)resolve
+		rejecter:(RCTPromiseRejectBlock)reject
+	) {
+
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			ZDKVisitorInfo *visitor = nil;
+
+			if (!message) {
+				reject(@"error", @"message not provided", nil);
+				return;
+			}
+
+			if (visitorInfo) {
+				visitor = [[ZDKVisitorInfo alloc] initWithName:visitorInfo[@"name"]
+                                                  email:visitorInfo[@"email"]
+												  phoneNumber:visitorInfo[@"phone"]];
+			}
+
+			ZDKOfflineForm *form = [[ZDKOfflineForm alloc]  initWithVisitorInfo:visitor
+                                                  	  departmentId:departmentId
+                                                      message:message];
+
+			[ZDKChat.chatProvider sendOfflineForm:form
+                           completion:^(ZDKOfflineForm *offlineForm, NSError *error) {
+				  if (error) {
+						reject(@"error", @"offline form couln't be sent", error);
+					} else {
+						resolve(offlineForm);
+					}
+			}];
+		});
 }
 
 @end

@@ -23,6 +23,8 @@ declare module "react-native-zendesk-chat" {
 	/** Current default is "optional" */
 	type PreChatFormFieldOptionVisibility = "hidden" | "optional" | "required";
 
+	type ChatRating = "good" | "bad";
+
 	interface StartChatOptions extends VisitorInfoOptions {
 		department?: string;
 		tags?: string[];
@@ -75,6 +77,12 @@ declare module "react-native-zendesk-chat" {
 		localizedDismissButtonTitle?: string;
 	}
 
+	type MessageId = string;
+	interface OfflineForm {
+		visitorInfo: VisitorInfoOptions
+		departmentId: string
+		message: string
+	}
 	class RNZendeskChatModuleImpl {
 		/**
 		 * Must be called before calling startChat/setVisitorInfo
@@ -97,6 +105,20 @@ declare module "react-native-zendesk-chat" {
 		 * Configure the token to start receiving Push Notifications
 		 */
 		registerPushToken: (token: string) => void;
+
+
+		/**
+		 * Chat provider
+		 */
+		sendMessage: (message: string) => Promise<MessageId>
+
+		sendChatRating: (rating: ChatRating) => Promise<ChatRating>
+
+		endChat: () => Promise<boolean>
+
+		sendOfflineForm: (message: string, visitorInfo?: VisitorInfoOptions, departmentId?: string) => Promise<OfflineForm>
+
+		// observeChatState: (callback: (chatState: any) => any) => void
 	}
 
 	const RNZendeskChatModule: RNZendeskChatModuleImpl;

@@ -16,8 +16,10 @@ import zendesk.chat.Chat;
 import zendesk.chat.ChatConfiguration;
 import zendesk.chat.ChatSessionStatus;
 import zendesk.chat.ChatState;
+import zendesk.chat.DeliveryStatus;
 import zendesk.chat.ObservationScope;
 import zendesk.chat.Observer;
+import zendesk.chat.OfflineForm;
 import zendesk.chat.ProfileProvider;
 import zendesk.chat.PreChatFormFieldStatus;
 import zendesk.chat.PushNotificationsProvider;
@@ -376,5 +378,70 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
                 }
             }
         });
-    }
+	}
+
+	@ReactMethod
+	public void sendMessage(String message, Promise promise) {
+		ChatLog log = Chat.INSTANCE.providers().chatProvider().sendMessage(message);
+
+		DeliveryStatus status = log.getStatus();
+
+		if (status == DeliveryStatus.DELIVERED) {
+			// not sure if this is the messageId like in the Objective-C API
+			promise.resolve(log.getId());
+		} else {
+			promise.reject();
+		}
+
+	}
+
+	@ReactMethod
+	public void sendRating(String rating, Promise promise) {
+    	zendesk.chat.ChatRating parsedRating = zendesk.chat.ChatRating.valueOf(rating);
+
+		Chat.INSTANCE.providers().chatProvider().sendChatRating(parsedRating, null);
+
+    	promise.resolve();
+	}
+
+	@ReactMethod
+	public void endChat(Promise promise) {
+    	Chat.INSTANCE.providers().chatProvider().endChat(null);
+
+    	promise.resolve(true);
+	}
+
+	@ReactMethod
+	public void _sendOfflineFormWith3Args(String message, ReadableMap visitorInfo, String departmentId, Promise promise) {
+		VisitorInfo.Builder visitorInfoBuilder = VisitorInfo.builder();
+
+		String name = getStringOrNull(visitorInfo, "name", "visitorInfo");
+		if (name != null) {
+			visitorInfoBuilder = visitorInfoBuilder.withName(name);
+		}
+		String email = getStringOrNull(visitorInfo, "email", "visitorInfo");
+		if (email != null) {
+			visitorInfoBuilder = visitorInfoBuilder.withEmail(email);
+		}
+		String phone = getStringOrNull(visitorInfo, "phone", "visitorInfo");
+		if (phone != null) {
+			visitorInfoBuilder = visitorInfoBuilder.withPhoneNumber(phone);
+		}
+
+		VisitorInfo visitor = visitorInfoBuilder.build();
+
+		OfflineForm.Builder offlineFormBuilder = OfflineForm.builder(message);
+
+		offlineFormBuilder.withVisitorInfo(visitor);
+
+		if (!departmentId.isEmpty()) {
+			offlineFormBuilder.withDepartment(departmentId);
+		}
+
+		OfflineForm offlineForm = offlineFormBuilder.build();
+
+		Chat.INSTANCE.providers().chatProvider().sendOfflineForm(offlineForm, () -> {
+			promise.resolve();
+		});
+	}
 }
