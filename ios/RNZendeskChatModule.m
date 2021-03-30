@@ -251,7 +251,7 @@ RCT_EXPORT_METHOD(endChat: (RCTPromiseResolveBlock)resolve
 		dispatch_sync(dispatch_get_main_queue(), ^{
 			[ZDKChat.chatProvider endChat:^(BOOL didEndChat, NSError *error) {
 				if (didEndChat) {
-					resolve(didEndChat ? @"true" : @"false");
+					resolve(@(didEndChat));
 				} else {
 					reject(@"error", @"chat no ended", error);
 				}
@@ -287,7 +287,7 @@ RCT_EXPORT_METHOD(_sendOfflineFormWith3Args:(NSString *)message visitorInfo:(NSD
 				  if (error) {
 						reject(@"error", @"offline form couln't be sent", error);
 					} else {
-						resolve(offlineForm);
+						resolve();
 					}
 			}];
 		});
