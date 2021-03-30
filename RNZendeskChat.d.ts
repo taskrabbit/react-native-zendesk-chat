@@ -97,6 +97,12 @@ declare module "react-native-zendesk-chat" {
 		 * Configure the token to start receiving Push Notifications
 		 */
 		registerPushToken: (token: string) => void;
+
+
+		/**
+		 * Check if there are available agents
+		 */
+		areAgentsOnline: () => Promise<Boolean>;
 	}
 
 	const RNZendeskChatModule: RNZendeskChatModuleImpl;
