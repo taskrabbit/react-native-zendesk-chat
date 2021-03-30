@@ -377,4 +377,18 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             }
         });
     }
+
+	@ReactMethod
+	public void isChatting(Promise promise) {
+        // Create a temporary observation scope until we get the chat state
+		observationScope = new ObservationScope();
+
+        Chat.INSTANCE.providers().chatProvider().observeChatState(observationScope, new Observer<ChatState>() {
+            @Override
+            public void update(ChatState chatState) {
+				promise.resolve(chatState.isChatting);
+                observationScope.cancel();
+            }
+		});
+	}
 }

@@ -201,4 +201,17 @@ RCT_EXPORT_METHOD(registerPushToken:(NSString *)token) {
 	});
 }
 
+RCT_EXPORT_METHOD(isChatting:
+	(RCTPromiseResolveBlock) resolve
+	rejecter: (RCTPromiseRejectBlock) reject
+) {
+	[ZDKChat.chatProvider getChatInfo:^(ZDKChatInfo *chatInfo, NSError *error) {
+		if (error) {
+			reject(@"error", @"ZDKChat failed to get the chatInfo", error);
+		} else {
+			resolve(@(chatInfo.isChatting));
+		}
+	}];
+}
+
 @end
