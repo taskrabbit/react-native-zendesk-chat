@@ -205,19 +205,17 @@ RCT_EXPORT_METHOD(areAgentsOnline:
 	(RCTPromiseResolveBlock) resolve
 	rejecter: (RCTPromiseRejectBlock) reject) {
 
-  [ZDKChat.accountProvider getAccout:^(ZDKChatAccount *account, NSError *error) {
+  [ZDKChat.accountProvider getAccount:^(ZDKChatAccount *account, NSError *error) {
 		if (account) {
-			switch (account.accountstatus) {
+			switch (account.accountStatus) {
 				case ZDKChatAccountStatusOnline:
-					resolve(true);
+					resolve(@YES);
 					break;
 
 				default:
-					resolve(false);
+					resolve(@NO);
 					break;
 			}
-		} else {
-			reject(false);
 		}
 	}];
 }
