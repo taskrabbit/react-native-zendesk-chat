@@ -24,6 +24,7 @@ import zendesk.chat.PushNotificationsProvider;
 import zendesk.chat.ChatEngine;
 import zendesk.chat.PushNotificationsProvider;
 import zendesk.chat.VisitorInfo;
+import zendesk.chat.AccountStatus;
 import zendesk.messaging.MessagingActivity;
 import zendesk.messaging.MessagingConfiguration;
 
@@ -378,4 +379,29 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             }
         });
     }
+
+	@ReactMethod
+	public void areAgentsOnline(Promise promise) {
+		Chat.INSTANCE.providers().accountProvider().getAccount(new ZendeskCallback<Account>() {
+			@Override
+			public void onSuccess(Account account) {
+				AccountStatus status = account.getStatus();
+
+				switch (status) {
+					case AccountStatus.ONLINE:
+						promise.resolve(true);
+						break;
+
+					default:
+						promise.resolve(false);
+						break;
+				}
+			}
+
+			@Override
+			public void onError(ErrorResponse errorResponse) {
+				reject();
+			}
+		});
+	}
 }

@@ -201,4 +201,23 @@ RCT_EXPORT_METHOD(registerPushToken:(NSString *)token) {
 	});
 }
 
+RCT_EXPORT_METHOD(areAgentsOnline:
+	(RCTPromiseResolveBlock) resolve
+	rejecter: (RCTPromiseRejectBlock) reject) {
+
+  [ZDKChat.accountProvider getAccount:^(ZDKChatAccount *account, NSError *error) {
+		if (account) {
+			switch (account.accountStatus) {
+				case ZDKChatAccountStatusOnline:
+					resolve(@YES);
+					break;
+
+				default:
+					resolve(@NO);
+					break;
+			}
+		}
+	}];
+}
+
 @end
