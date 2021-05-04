@@ -98,7 +98,6 @@ declare module "react-native-zendesk-chat" {
 		 */
 		registerPushToken: (token: string) => void;
 
-
 		/**
 		 * Check if there are available agents
 		 */
