@@ -187,7 +187,7 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
 	[RCTPresentedViewController() dismissViewControllerAnimated:YES completion:nil];
 }
 
-RCT_EXPORT_METHOD(init:(NSString *)zenDeskKey appId:(NSString *)appId) {
+RCT_EXPORT_METHOD(_initWith2Args:(NSString *)zenDeskKey appId:(NSString *)appId) {
 	if (appId) {
 		[ZDKChat initializeWithAccountKey:zenDeskKey appId:appId queue:dispatch_get_main_queue()];
 	} else {
@@ -197,8 +197,29 @@ RCT_EXPORT_METHOD(init:(NSString *)zenDeskKey appId:(NSString *)appId) {
 
 RCT_EXPORT_METHOD(registerPushToken:(NSString *)token) {
 	dispatch_sync(dispatch_get_main_queue(), ^{
-		[ZDKChat registerPushToken:[RCTConvert NSData:token]];
+		[ZDKChat registerPushTokenString:token];
 	});
+}
+
+RCT_EXPORT_METHOD(areAgentsOnline:
+	(RCTPromiseResolveBlock) resolve
+	rejecter: (RCTPromiseRejectBlock) reject) {
+
+  [ZDKChat.accountProvider getAccount:^(ZDKChatAccount *account, NSError *error) {
+		if (account) {
+			switch (account.accountStatus) {
+				case ZDKChatAccountStatusOnline:
+					resolve(@YES);
+					break;
+
+				default:
+					resolve(@NO);
+					break;
+			}
+		} else {
+			reject(@"no-available-zendesk-account", @"DevError: Not connected to Zendesk or network issue", error);
+		}
+	}];
 }
 
 @end

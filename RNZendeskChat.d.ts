@@ -28,7 +28,13 @@ declare module "react-native-zendesk-chat" {
 		tags?: string[];
 
 		behaviorFlags?: {
-			/** if omitted, the form is enabled */
+			/**
+			 * if omitted, the form is enabled
+			 *
+			 * @warning Android: If you enable preChat form with `required` or `optional` for keys
+			 * 	Then any visitor info you provide statically as VisitorInfoOptions will be ignored.
+			 * 	This is documented upstream here: https://support.zendesk.com/hc/en-us/articles/360055343673
+			 */
 			showPreChatForm?: boolean;
 			/** if omitted, the prompt is enabled */
 			showChatTranscriptPrompt?: boolean;
@@ -38,7 +44,13 @@ declare module "react-native-zendesk-chat" {
 			showAgentAvailability?: boolean;
 		};
 
-		/** If omitted, the preChatForm will be left as default in Zendesk */
+		/**
+		 * If omitted, the preChatForm will be left as default in Zendesk, be explicit if you want control.
+		 *
+		 * @warning Android: If you provide the preChat form with `required` or `optional` for keys
+		 * 	Then any visitor info you provide statically as VisitorInfoOptions will be ignored.
+		 * 	This is documented upstream here: https://support.zendesk.com/hc/en-us/articles/360055343673
+		 */
 		preChatFormOptions?: {
 			/** Should we ask the user for a contact email? */
 			email?: PreChatFormFieldOptionVisibility;
@@ -85,6 +97,11 @@ declare module "react-native-zendesk-chat" {
 		 * Configure the token to start receiving Push Notifications
 		 */
 		registerPushToken: (token: string) => void;
+
+		/**
+		 * Check if there are available agents
+		 */
+		areAgentsOnline: () => Promise<Boolean>;
 	}
 
 	const RNZendeskChatModule: RNZendeskChatModuleImpl;

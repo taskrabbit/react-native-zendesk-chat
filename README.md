@@ -76,6 +76,18 @@ ZendeskChat.startChat({
 });
 ```
 
+
+### Obtaining the `YOUR_ZENDESK_ACCOUNT_KEY`
+To optain your zendesk account key see the instructions in [Initializing the SDK](https://api.zopim.com/web-sdk/#initializing-the-sdk) in the Zendesk SDK.
+
+To get your account key, follow these steps:
+
+1. In the Zendesk Chat Dashboard, click on your profile in the upper right corner and click on the 'Check Connection' option:
+![status_dropdown](https://api.zopim.com/web-sdk/images/status_dropdown.png)
+1. In the dialog, copy the account key value
+![account_key](https://api.zopim.com/web-sdk/images/account_key.png)
+
+
 ### Styling
 
 Changing the UI Styling is mostly achieved through native techniques.
@@ -120,7 +132,7 @@ In Xcode, drag and drop `node_modules/react-native-zendesk-chat/RNZendeskChat.m`
 // ...
 
 // Inside the appropriate appDidFinishLaunching method
-[ZDCChat initializeWithAccountKey:@"YOUR_ZENDESK_ACCOUNT_KEY"];
+[ZDCChat initializeWithAccountKey:@"YOUR_ZENDESK_ACCOUNT_KEY" appId:"YOUR_ZENDESK_APP_ID"];
 
 // And access other interesting APIs
 ```
@@ -170,7 +182,7 @@ compile project(':react-native-zendesk-chat')
 // Note: there is a JS method to do this -- prefer doing that! -- This is for advanced users only.
 
 // Call this once in your Activity's bootup lifecycle
-Chat.INSTANCE.init(mReactContext, key);
+Chat.INSTANCE.init(mReactContext, key, appId);
 ```
 
 ## Contributing
