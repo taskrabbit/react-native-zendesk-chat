@@ -216,6 +216,8 @@ RCT_EXPORT_METHOD(areAgentsOnline:
 					resolve(@NO);
 					break;
 			}
+		} else {
+			reject(@"no-available-zendesk-account", @"DevError: Not logged in to Zendesk", error);
 		}
 	}];
 }
