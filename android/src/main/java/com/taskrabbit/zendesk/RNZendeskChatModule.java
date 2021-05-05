@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.util.Log;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -12,8 +13,12 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableNativeMap;
+
+import zendesk.chat.Account;
+import zendesk.chat.AccountStatus;
 import zendesk.chat.Chat;
 import zendesk.chat.ChatConfiguration;
+import zendesk.chat.ChatEngine;
 import zendesk.chat.ChatSessionStatus;
 import zendesk.chat.ChatState;
 import zendesk.chat.ObservationScope;
@@ -21,12 +26,11 @@ import zendesk.chat.Observer;
 import zendesk.chat.ProfileProvider;
 import zendesk.chat.PreChatFormFieldStatus;
 import zendesk.chat.PushNotificationsProvider;
-import zendesk.chat.ChatEngine;
-import zendesk.chat.PushNotificationsProvider;
 import zendesk.chat.VisitorInfo;
-import zendesk.chat.AccountStatus;
 import zendesk.messaging.MessagingActivity;
 import zendesk.messaging.MessagingConfiguration;
+import com.zendesk.service.ErrorResponse;
+import com.zendesk.service.ZendeskCallback;
 
 import java.lang.String;
 import java.util.ArrayList;
@@ -380,28 +384,28 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
         });
     }
 
-	@ReactMethod
-	public void areAgentsOnline(Promise promise) {
-		Chat.INSTANCE.providers().accountProvider().getAccount(new ZendeskCallback<Account>() {
-			@Override
-			public void onSuccess(Account account) {
-				AccountStatus status = account.getStatus();
+    @ReactMethod
+    public void areAgentsOnline(final Promise promise) {
+        Chat.INSTANCE.providers().accountProvider().getAccount(new ZendeskCallback<Account>() {
+            @Override
+            public void onSuccess(Account account) {
+                AccountStatus status = account.getStatus();
 
-				switch (status) {
-					case AccountStatus.ONLINE:
-						promise.resolve(true);
-						break;
+                switch (status) {
+                    case ONLINE:
+                        promise.resolve(true);
+                        break;
 
-					default:
-						promise.resolve(false);
-						break;
-				}
-			}
+                    default:
+                        promise.resolve(false);
+                        break;
+                }
+            }
 
-			@Override
-			public void onError(ErrorResponse errorResponse) {
-				reject();
-			}
-		});
-	}
+            @Override
+            public void onError(ErrorResponse errorResponse) {
+                promise.reject("no-available-zendesk-account", "DevError: Not connected to Zendesk or network issue");
+            }
+        });
+    }
 }
