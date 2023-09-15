@@ -1,42 +1,43 @@
 apply plugin: 'com.android.library'
 
 def safeExtGet(prop, fallback) {
-  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
+def zendeskChatVersion = '3.4.0'
+def zendeskMessagingVersion = '5.4.0'
 
 buildscript {
-  repositories {
-    jcenter()
-    google()
-  }
-
-  dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.1'
-  }
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.2'
+    }
 }
 
-android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 28)
-    buildToolsVersion safeExtGet('buildToolsVersion', "28.0.3")
 
+android {
+    compileSdkVersion safeExtGet('compileSdkVersion', 33)
+    buildToolsVersion safeExtGet('buildToolsVersion', '33.0.0')
     defaultConfig {
-      minSdkVersion safeExtGet('minSdkVersion', 16)
-      targetSdkVersion safeExtGet('targetSdkVersion', 28)
-      versionCode 1
-      versionName "1.0"
+        minSdkVersion safeExtGet('minSdkVersion', 16)
+        targetSdkVersion safeExtGet('targetSdkVersion', 28)
+        versionCode 1
+        versionName "1.0"
     }
 }
 
 repositories {
-  mavenCentral()
-  jcenter()
-  google()
-  maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
+    mavenCentral()
+    google()
+    maven {
+        url 'https://zendesk.jfrog.io/zendesk/repo'
+    }
 }
 
 dependencies {
-  implementation "com.facebook.react:react-native:+"
-
-  api group: 'com.zendesk', name: 'chat', version: safeExtGet('zendeskChatVersion', '3.1.0')
-  api group: 'com.zendesk', name: 'messaging', version: safeExtGet('zendeskMessagingVersion', '5.1.0')
+    implementation "com.facebook.react:react-native:+"
+    implementation group: 'com.zendesk', name: 'chat', version: zendeskChatVersion
+    implementation group: 'com.zendesk', name: 'messaging', version: zendeskMessagingVersion
 }

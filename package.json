@@ -38,7 +38,7 @@
 	"license": "MIT",
 	"devDependencies": { "prettier": "2.0.x", "eslint": "7.3.x" },
 	"peerDependencies": {
-		"react": "^16.11.0",
-		"react-native": "0.60.x | 0.61.x | 0.62.x | 0.63.x"
+		"react": "*",
+		"react-native": "*"
 	}
 }

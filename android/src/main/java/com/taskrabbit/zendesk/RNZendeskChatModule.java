@@ -13,6 +13,10 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableNativeMap;
+import com.zendesk.service.ErrorResponse;
+import com.zendesk.service.ZendeskCallback;
+
+import java.util.ArrayList;
 
 import zendesk.chat.Account;
 import zendesk.chat.AccountStatus;
@@ -23,17 +27,12 @@ import zendesk.chat.ChatSessionStatus;
 import zendesk.chat.ChatState;
 import zendesk.chat.ObservationScope;
 import zendesk.chat.Observer;
-import zendesk.chat.ProfileProvider;
 import zendesk.chat.PreChatFormFieldStatus;
+import zendesk.chat.ProfileProvider;
 import zendesk.chat.PushNotificationsProvider;
 import zendesk.chat.VisitorInfo;
-import zendesk.messaging.MessagingActivity;
-import zendesk.messaging.MessagingConfiguration;
-import com.zendesk.service.ErrorResponse;
-import com.zendesk.service.ZendeskCallback;
-
-import java.lang.String;
-import java.util.ArrayList;
+import zendesk.classic.messaging.MessagingActivity;
+import zendesk.classic.messaging.MessagingConfiguration;
 
 public class RNZendeskChatModule extends ReactContextBaseJavaModule {
     private static final String TAG = "[RNZendeskChatModule]";
