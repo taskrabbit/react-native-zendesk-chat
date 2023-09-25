@@ -72,21 +72,22 @@ ZendeskChat.startChat({
 		phone: "optional",
 		department: "required",
 	},
+	// The JWT authentication options. See RNZendeskChat.d.ts for alternative options.
+	authenticationOptions: {
+		jwt: "a_jwt",
+	},
 	localizedDismissButtonTitle: "Dismiss",
 });
 ```
 
-
 ### Obtaining the `YOUR_ZENDESK_ACCOUNT_KEY`
+
 To optain your zendesk account key see the instructions in [Initializing the SDK](https://api.zopim.com/web-sdk/#initializing-the-sdk) in the Zendesk SDK.
 
 To get your account key, follow these steps:
 
-1. In the Zendesk Chat Dashboard, click on your profile in the upper right corner and click on the 'Check Connection' option:
-![status_dropdown](https://api.zopim.com/web-sdk/images/status_dropdown.png)
-1. In the dialog, copy the account key value
-![account_key](https://api.zopim.com/web-sdk/images/account_key.png)
-
+1. In the Zendesk Chat Dashboard, click on your profile in the upper right corner and click on the 'Check Connection' option: ![status_dropdown](https://api.zopim.com/web-sdk/images/status_dropdown.png)
+1. In the dialog, copy the account key value ![account_key](https://api.zopim.com/web-sdk/images/account_key.png)
 
 ### Styling
 
@@ -165,11 +166,11 @@ dependencies {
   api group: 'com.zendesk', name: 'chat', version: '2.2.0'
   api group: 'com.zendesk', name: 'messaging', version: '4.3.1'
 ```
-also in project build.gradle 
 
- Add ```gradle
-  maven { url 'https://zendesk.jfrog.io/zendesk/repo' }```
-     
+also in project build.gradle
+
+Add `gradle maven { url 'https://zendesk.jfrog.io/zendesk/repo' }`
+
 For RN < 0.60:
 
 ```gradle
@@ -183,6 +184,85 @@ compile project(':react-native-zendesk-chat')
 
 // Call this once in your Activity's bootup lifecycle
 Chat.INSTANCE.init(mReactContext, key, appId);
+```
+
+#### Expo
+
+This package does not support Expo Go.
+
+##### iOS
+
+No extra configuration is needed for this package to work with Expo.
+
+##### Android
+
+When utilizing this package on Android, you'll need to add the expo plugin to modify the `build.gradle` file.
+
+1. Create a new plugin file
+
+   You can name the file whatever you like, for this example we've called it `zendesk-chat-plugin.js` and we'll keep it in the same directory as the `app.config(.js)` file.
+
+2. Add the plugin contents to the `zendesk-chat-plugin.js` that modifies the `build.gradle`.
+
+   You can find more ingormation about [Expo plugins here](https://docs.expo.dev/config-plugins/plugins-and-mods/).
+
+   ```JavaScript
+   // Expo config plugin for Zendesk Chat SDK
+   // Adds Zendesk chat support to managed expo apps using the dev client
+
+   const { withAppBuildGradle, withProjectBuildGradle, withPlugins } = require('@expo/config-plugins');
+   const { mergeContents } = require('@expo/config-plugins/build/utils/generateCode');
+
+   const withZendeskProjectGradleBuild = (config) =>
+   	withProjectBuildGradle(config, (gradleConfig) => {
+   		gradleConfig.modResults.contents = mergeContents({
+   			tag: 'zendesk-chat-impl-gradle-build',
+   			src: gradleConfig.modResults.contents,
+   			newSrc: `
+   				allprojects {
+   					repositories {
+   							maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
+   					}
+   			}
+   			`,
+   			anchor: /dependencies/,
+   			offset: -1,
+   			comment: '//',
+   		}).contents;
+
+   		return gradleConfig;
+   	});
+
+   const withZendeskGradleBuild = (config) =>
+   	withAppBuildGradle(config, (gradleConfig) => {
+   		gradleConfig.modResults.contents = mergeContents({
+   			tag: 'zendesk-chat-impl-gradle-build',
+   			src: gradleConfig.modResults.contents,
+   			newSrc: `
+   			implementation group: 'com.zendesk', name: 'chat', version: '3.3.6'
+   			implementation group: 'com.zendesk', name: 'messaging', version: '5.2.5'
+   			`,
+   			anchor: /dependencies/,
+   			offset: 1,
+   			comment: '//',
+   		}).contents;
+
+   		return gradleConfig;
+   	});
+
+   const withZendesk = (config) =>
+   	withPlugins(config, [withZendeskProjectGradleBuild, withZendeskGradleBuild]);
+
+   module.exports = withZendesk;
+   ```
+
+3. Add the expo plugin to the list of plugins in your `app.config` or `app.config.js` file.
+
+```JavaScript
+plugins: [
+	'./plugins/zendesk-chat-plugin.js`,
+	/* Your other plugins */
+]
 ```
 
 ## Contributing

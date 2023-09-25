@@ -33,7 +33,8 @@
 		"Jordan Smith <jordan@taskrabbit.com>",
 		"Michael Kachanovskyi <mikach27@gmail.com>",
 		"Robert Murray <rmurray@taskrabbit.com>",
-		"Zane Chua <github.com/zanechua>"
+		"Zane Chua <github.com/zanechua>",
+		"Eric Adamski <github.com/ericadamski>"
 	],
 	"license": "MIT",
 	"devDependencies": {
