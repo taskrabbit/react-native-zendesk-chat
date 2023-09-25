@@ -7,6 +7,7 @@
 
 
 #import "RNZendeskChatModule.h"
+#import "RNZendeskChatAuthenticationModule.h"
 
 #import <React/RCTUtils.h>
 #import <React/RCTConvert.h>
@@ -147,12 +148,18 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
 		options = NSDictionary.dictionary;
 	}
 
-	dispatch_sync(dispatch_get_main_queue(), ^{
-
-		ZDKChat.instance.configuration = [self applyVisitorInfo:options
-													 intoConfig: _visitorAPIConfig ?: [[ZDKChatAPIConfiguration alloc] init]];
-
-		ZDKChatConfiguration * chatConfig = [self chatConfigurationFromConfig:options];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        
+        ZDKChat.instance.configuration = [self applyVisitorInfo:options
+                                                     intoConfig: _visitorAPIConfig ?: [[ZDKChatAPIConfiguration alloc] init]];
+        
+        ZDKChatConfiguration * chatConfig = [self chatConfigurationFromConfig:options];
+        
+        JwtAuthStrategy *authStrategy = [[JwtAuthStrategy alloc] initJWTAuthFromConfig: options];
+        
+        if ([authStrategy canUseJwtAuth]) {
+            [ZDKChat.instance setIdentityWithAuthenticator:authStrategy];
+        }
 
 		NSError *error = nil;
 		NSArray *engines = @[
