@@ -20,6 +20,44 @@ declare module "react-native-zendesk-chat" {
 		botAvatarDrawableId?: number;
 	}
 
+	interface JwtAuthenticationHttpOptions {
+		/**
+		 * The endpoint on your server to send the JWT request to.
+		 *
+		 * The Request looks as follows:
+		 *
+		 * ```shell
+		 * curl --request POST --url <tokenEndpoint> --header 'Content-Type application/json' --data '{ "externalId": <externalId> }'
+		 * ```
+		 *
+		 * Your endpoint is expected to return a JSON response with the shape:
+		 *
+		 * ```JSON
+		 * { "jwt": "-the-jwt-" }
+		 * ```
+		 */
+		tokenEndpoint: string | undefiend;
+
+		/**
+		 * The identifier sent as part of the JWT request used to identify the user
+		 * on your server.
+		 */
+		externalId: string | undefined;
+
+		/**
+		 * Headers to be passed along with any HTTP request made
+		 * to the endpoint above.
+		 */
+		headers?: Record<string, string>;
+	}
+
+	interface JwtAuthenticationPrefetchOptions {
+		/**
+		 * A prefetched JWT for the current session
+		 */
+		jwt: string;
+	}
+
 	/** Current default is "optional" */
 	type PreChatFormFieldOptionVisibility = "hidden" | "optional" | "required";
 
@@ -68,42 +106,8 @@ declare module "react-native-zendesk-chat" {
 		 * For details see: https://developer.zendesk.com/documentation/classic-web-widget-sdks/chat-sdk-v2/working-with-the-chat-sdk/enabling-authenticated-users-with-the-chat-sdk-/#creating-a-jwt-token
 		 */
 		authenticationOptions?:
-			| {
-					/**
-					 * The endpoint on your server to send the JWT request to.
-					 *
-					 * The Request looks as follows:
-					 *
-					 * ```shell
-					 * curl --request POST --url <tokenEndpoint> --header 'Content-Type application/json' --data '{ "externalId": <externalId> }'
-					 * ```
-					 *
-					 * Your endpoint is expected to return a JSON response with the shape:
-					 *
-					 * ```JSON
-					 * { "jwt": "-the-jwt-" }
-					 * ```
-					 */
-					tokenEndpoint: string | undefiend;
-
-					/**
-					 * The identifier sent as part of the JWT request used to identify the user
-					 * on your server.
-					 */
-					externalId: string | undefined;
-
-					/**
-					 * Headers to be passed along with any HTTP request made
-					 * to the endpoint above.
-					 */
-					headers?: Record<string, string>;
-			  }
-			| {
-					/**
-					 * A prefetched JWT for the current session
-					 */
-					jwt: string;
-			  };
+			| JwtAuthenticationHttpOptions
+			| JwtAuthenticationPrefetchOptions;
 
 		/**
 		 * Configure the Chat-Bot (if any)
