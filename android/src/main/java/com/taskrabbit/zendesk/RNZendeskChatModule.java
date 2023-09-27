@@ -339,6 +339,14 @@ public class RNZendeskChatModule extends ReactContextBaseJavaModule {
             setupChatStartObserverToSetVisitorInfo();
         }
 
+        ReadableMap jwtAuthenticationOptions = RNZendeskChatModule.getReadableMap(options, "authenticationOptions", "startChat");
+
+        RNZendeskJwtAuthenticationModule jwtAuthentication = new RNZendeskJwtAuthenticationModule(jwtAuthenticationOptions);
+
+        if (jwtAuthentication.canUseJwtAuth()) {
+            Chat.INSTANCE.setIdentity(jwtAuthentication);
+        }
+
         Activity activity = getCurrentActivity();
         if (activity != null) {
             messagingBuilder.withEngines(ChatEngine.engine()).show(activity, chatConfig);

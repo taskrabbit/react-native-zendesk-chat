@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		120AA3F92AC1EF9B00E04DF9 /* RNZendeskChatAuthenticationModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 120AA3F82AC1EF9B00E04DF9 /* RNZendeskChatAuthenticationModule.m */; };
 		B6462ECD1C603E5C0010294B /* RNZendeskChatModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B6462ECC1C603E5C0010294B /* RNZendeskChatModule.m */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		120AA3F82AC1EF9B00E04DF9 /* RNZendeskChatAuthenticationModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNZendeskChatAuthenticationModule.m; sourceTree = "<group>"; };
 		B6462EBF1C603E340010294B /* libRNZendeskChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNZendeskChat.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6462ECB1C603E5C0010294B /* RNZendeskChatModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNZendeskChatModule.h; sourceTree = "<group>"; };
 		B6462ECC1C603E5C0010294B /* RNZendeskChatModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNZendeskChatModule.m; sourceTree = "<group>"; };
@@ -42,6 +44,7 @@
 		B6462EB61C603E340010294B = {
 			isa = PBXGroup;
 			children = (
+				120AA3F82AC1EF9B00E04DF9 /* RNZendeskChatAuthenticationModule.m */,
 				B6462ECB1C603E5C0010294B /* RNZendeskChatModule.h */,
 				B6462ECC1C603E5C0010294B /* RNZendeskChatModule.m */,
 				B6462EC01C603E340010294B /* Products */,
@@ -95,6 +98,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = B6462EB61C603E340010294B;
@@ -112,6 +116,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				120AA3F92AC1EF9B00E04DF9 /* RNZendeskChatAuthenticationModule.m in Sources */,
 				B6462ECD1C603E5C0010294B /* RNZendeskChatModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
