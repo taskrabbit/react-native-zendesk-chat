@@ -1,12 +1,12 @@
 //
-//  RNZendeskChat.m
+//  RNZendeskSDKMessaging.m
 //  Tasker
 //
 //  Created by Jean-Richard Lai on 11/23/15.
 //
 
 
-#import "RNZendeskChatModule.h"
+#import "RNZendeskSDKMessagingModule.h"
 
 #import <React/RCTUtils.h>
 #import <React/RCTConvert.h>
@@ -30,15 +30,15 @@ RCT_ENUM_CONVERTER(ZDKFormFieldStatus,
 
 @end
 
-@interface RNZendeskChatModule ()
+@interface RNZendeskSDKMessagingModule ()
 @end
 
-@implementation RNZendeskChatModule
+@implementation RNZendeskSDKMessagingModule
 // Backwards compatibility with the unnecessary setVisitorInfo method
 ZDKChatAPIConfiguration *_visitorAPIConfig;
 
 
-RCT_EXPORT_MODULE(RNZendeskChatModule);
+RCT_EXPORT_MODULE(RNZendeskSDKMessagingModule);
 
 RCT_EXPORT_METHOD(setVisitorInfo:(NSDictionary *)options) {
 	if (!NSThread.isMainThread) {
@@ -62,13 +62,13 @@ RCT_EXPORT_METHOD(setVisitorInfo:(NSDictionary *)options) {
 														email:options[@"email"]
 												  phoneNumber:options[@"phone"]];
 
-	NSLog(@"[RNZendeskChatModule] Applied visitor info: department: %@ tags: %@, email: %@, name: %@, phone: %@", config.department, config.tags, config.visitorInfo.email, config.visitorInfo.name, config.visitorInfo.phoneNumber);
+	NSLog(@"[RNZendeskSDKMessagingModule] Applied visitor info: department: %@ tags: %@, email: %@, name: %@, phone: %@", config.department, config.tags, config.visitorInfo.email, config.visitorInfo.name, config.visitorInfo.phoneNumber);
 	return config;
 }
 
 #define RNZDKConfigHashErrorLog(options, what)\
 if (!!options) {\
-	NSLog(@"[RNZendeskChatModule] Invalid %@ -- expected a config hash", what);\
+	NSLog(@"[RNZendeskSDKMessagingModule] Invalid %@ -- expected a config hash", what);\
 }
 
 - (ZDKMessagingConfiguration *)messagingConfigurationFromConfig:(NSDictionary*)options {
@@ -142,7 +142,7 @@ config.target = [RCTConvert BOOL: behaviorFlags[@"" #key] ?: @YES]
 RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
 	if (!options || ![options isKindOfClass: NSDictionary.class]) {
 		if (!!options){
-			NSLog(@"[RNZendeskChatModule] Invalid JS startChat Configuration Options -- expected a config hash");
+			NSLog(@"[RNZendeskSDKMessagingModule] Invalid JS startChat Configuration Options -- expected a config hash");
 		}
 		options = NSDictionary.dictionary;
 	}
@@ -159,7 +159,7 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
 			[ZDKChatEngine engineAndReturnError:&error]
 		];
 		if (!!error) {
-			NSLog(@"[RNZendeskChatModule] Internal Error loading ZDKChatEngine %@", error);
+			NSLog(@"[RNZendeskSDKMessagingModule] Internal Error loading ZDKChatEngine %@", error);
 			return;
 		}
 
@@ -169,7 +169,7 @@ RCT_EXPORT_METHOD(startChat:(NSDictionary *)options) {
 																 configs:@[chatConfig, messagingConfig]
 																   error:&error];
 		if (!!error) {
-			NSLog(@"[RNZendeskChatModule] Internal Error building ZDKMessagingUI %@",error);
+			NSLog(@"[RNZendeskSDKMessagingModule] Internal Error building ZDKMessagingUI %@",error);
 			return;
 		}
 

@@ -2,6 +2,6 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridgeModule.h>
 
-@interface RNZendeskChatModule : NSObject<RCTBridgeModule>
+@interface RNZendeskSDKMessagingModule : NSObject<RCTBridgeModule>
 
 @end
