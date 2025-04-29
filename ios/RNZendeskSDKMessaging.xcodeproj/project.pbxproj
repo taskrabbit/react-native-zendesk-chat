@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B6462EBF1C603E340010294B /* libRNZendeskChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNZendeskChat.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6462EBF1C603E340010294B /* libRNZendeskSDKMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNZendeskSDKMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6462ECB1C603E5C0010294B /* RNZendeskSDKMessagingModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNZendeskSDKMessagingModule.h; sourceTree = "<group>"; };
 		B6462ECC1C603E5C0010294B /* RNZendeskSDKMessagingModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNZendeskSDKMessagingModule.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,7 +51,7 @@
 		B6462EC01C603E340010294B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B6462EBF1C603E340010294B /* libRNZendeskChat.a */,
+				B6462EBF1C603E340010294B /* libRNZendeskSDKMessaging.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,9 +59,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B6462EBE1C603E340010294B /* RNZendeskChat */ = {
+		B6462EBE1C603E340010294B /* RNZendeskSDKMessaging */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B6462EC81C603E340010294B /* Build configuration list for PBXNativeTarget "RNZendeskChat" */;
+			buildConfigurationList = B6462EC81C603E340010294B /* Build configuration list for PBXNativeTarget "RNZendeskSDKMessaging" */;
 			buildPhases = (
 				B6462EBB1C603E340010294B /* Sources */,
 				B6462EBC1C603E340010294B /* Frameworks */,
@@ -71,9 +71,9 @@
 			);
 			dependencies = (
 			);
-			name = RNZendeskChat;
-			productName = RNZendeskChat;
-			productReference = B6462EBF1C603E340010294B /* libRNZendeskChat.a */;
+			name = RNZendeskSDKMessaging;
+			productName = RNZendeskSDKMessaging;
+			productReference = B6462EBF1C603E340010294B /* libRNZendeskSDKMessaging.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -103,7 +103,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B6462EBE1C603E340010294B /* RNZendeskChat */,
+				B6462EBE1C603E340010294B /* RNZendeskSDKMessaging */,
 			);
 		};
 /* End PBXProject section */
@@ -242,7 +242,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B6462EC81C603E340010294B /* Build configuration list for PBXNativeTarget "RNZendeskChat" */ = {
+		B6462EC81C603E340010294B /* Build configuration list for PBXNativeTarget "RNZendeskSDKMessaging" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B6462EC91C603E340010294B /* Debug */,
