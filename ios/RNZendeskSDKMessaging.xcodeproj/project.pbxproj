@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -90,14 +90,15 @@
 					};
 				};
 			};
-			buildConfigurationList = B6462EBA1C603E340010294B /* Build configuration list for PBXProject "RNZendeskChat" */;
-			compatibilityVersion = "Xcode 3.2";
+			buildConfigurationList = B6462EBA1C603E340010294B /* Build configuration list for PBXProject "RNZendeskSDKMessaging" */;
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = B6462EB61C603E340010294B;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = B6462EC01C603E340010294B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -232,7 +233,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B6462EBA1C603E340010294B /* Build configuration list for PBXProject "RNZendeskChat" */ = {
+		B6462EBA1C603E340010294B /* Build configuration list for PBXProject "RNZendeskSDKMessaging" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B6462EC61C603E340010294B /* Debug */,
