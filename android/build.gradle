@@ -1,42 +1,42 @@
 apply plugin: 'com.android.library'
 
+import groovy.json.JsonSlurper
+
 def safeExtGet(prop, fallback) {
-  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
-buildscript {
-  repositories {
-    jcenter()
-    google()
-  }
+def getModuleVersion() {
+    def jsonFile = file('../package.json')
+    def parsedJson = new JsonSlurper().parseText(jsonFile.text)
 
-  dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.1'
-  }
+    return parsedJson["version"]
 }
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 28)
-    buildToolsVersion safeExtGet('buildToolsVersion', "28.0.3")
+  compileSdkVersion safeExtGet('compileSdkVersion', 35)
+  buildToolsVersion safeExtGet('buildToolsVersion', "35.0.0")
 
-    defaultConfig {
-      minSdkVersion safeExtGet('minSdkVersion', 16)
-      targetSdkVersion safeExtGet('targetSdkVersion', 28)
-      versionCode 1
-      versionName "1.0"
-    }
+  defaultConfig {
+    minSdkVersion safeExtGet('minSdkVersion', 24)
+    targetSdkVersion safeExtGet('compileSdkVersion', 34)
+
+    buildConfigField("String", "MODULE_VERSION", "\"${getModuleVersion()}\"")
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
 }
 
 repositories {
   mavenCentral()
-  jcenter()
   google()
-  maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
+  maven { url "https://zendesk.jfrog.io/artifactory/repo" }
 }
 
 dependencies {
   implementation "com.facebook.react:react-native:+"
-
-  api group: 'com.zendesk', name: 'chat', version: safeExtGet('zendeskChatVersion', '3.1.0')
-  api group: 'com.zendesk', name: 'messaging', version: safeExtGet('zendeskMessagingVersion', '5.1.0')
+  implementation "zendesk.messaging:messaging-android:2.31+"
 }
