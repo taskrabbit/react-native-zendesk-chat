@@ -20,8 +20,33 @@
 
 @implementation RNZendeskSDKMessagingModule
 
+NSArray *SUPPORTED_EVENTS = @[
+    /// Invoked when there is a change to the current total number of unread messages.
+    @"ZDKZendeskEventUnreadMessageCountChanged",
+    /// Invoked when a rest call fails for authentication reasons.
+    @"ZDKZendeskEventAuthenticationFailed",
+    /// Invoked when a conversation has been added.
+    @"ZDKZendeskEventConversationAdded",
+    /// The SDK <code>ConnectionStatus</code> has changed due to an action or another event.
+    @"ZDKZendeskEventConnectionStatusChanged",
+    /// Invoked when a message fails to be sent.
+    @"ZDKZendeskEventSendMessageFailed",
+    /// Invoked when the conversation screen is opened.
+    @"ZDKZendeskEventConversationOpened",
+    /// Invoked when the conversation is started on the device.
+    @"ZDKZendeskEventConversationStarted",
+    /// Invoked when the messages shown to the user are updated.
+    @"ZDKZendeskEventMessagesShown"
+];
+
 
 RCT_EXPORT_MODULE(RNZendeskSDKMessagingModule);
+
+- (NSArray<NSString *> *)supportedEvents {
+    return SUPPORTED_EVENTS;
+}
+
+
 
 RCT_EXPORT_METHOD(initialize: (NSString *)channelKey resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -34,6 +59,45 @@ RCT_EXPORT_METHOD(initialize: (NSString *)channelKey resolver:(RCTPromiseResolve
             resolve(@(YES));
         }];
     });
+}
+
+
+RCT_EXPORT_METHOD(startObservingEvents) {
+    // Get your Zendesk instance:
+    Zendesk *instance = [Zendesk instance];
+    
+    // To add an event observer to your Zendesk instance:
+    [instance addEventObserver:self :^(enum ZDKZendeskEvent event, id _Nullable value) {
+        switch (event) {
+            case ZDKZendeskEventUnreadMessageCountChanged:
+                [self sendEventWithName:@"ZDKZendeskEventUnreadMessageCountChanged" body:value];
+            case ZDKZendeskEventAuthenticationFailed:
+                [self sendEventWithName:@"ZDKZendeskEventAuthenticationFailed" body:value];
+            case ZDKZendeskEventConversationAdded:
+                [self sendEventWithName:@"ZDKZendeskEventConversationAdded" body:value];
+            case ZDKZendeskEventConnectionStatusChanged:
+                [self sendEventWithName:@"ZDKZendeskEventConnectionStatusChanged" body:value];
+            case ZDKZendeskEventSendMessageFailed:
+                [self sendEventWithName:@"ZDKZendeskEventSendMessageFailed" body:value];
+            case ZDKZendeskEventConversationOpened:
+                [self sendEventWithName:@"ZDKZendeskEventConversationOpened" body:value];
+            case ZDKZendeskEventConversationStarted:
+                [self sendEventWithName:@"ZDKZendeskEventConversationStarted" body:value];
+            case ZDKZendeskEventMessagesShown:
+                [self sendEventWithName:@"ZDKZendeskEventMessagesShown" body:value];
+            default:
+                break;
+        }
+    }];
+}
+
+
+RCT_EXPORT_METHOD(stopObservingEvents) {
+    // Get your Zendesk instance:
+    Zendesk *instance = [Zendesk instance];
+    
+    // To remove an event observer from your Zendesk instance:
+    [instance removeEventObserver:self];
 }
 
 RCT_EXPORT_METHOD(showMessaging) {
