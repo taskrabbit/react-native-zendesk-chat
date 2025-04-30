@@ -46,7 +46,9 @@ RCT_EXPORT_MODULE(RNZendeskSDKMessagingModule);
     return SUPPORTED_EVENTS;
 }
 
-RCT_EXPORT_METHOD(initialize: (NSString *)channelKey resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(initialize: (NSString *)channelKey
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [Zendesk initializeWithChannelKey:channelKey messagingFactory:[[ZDKDefaultMessagingFactory alloc] init] completionHandler:^(Zendesk * _Nullable zendesk, NSError * _Nullable error) {
             if (error != nil) {
@@ -96,7 +98,9 @@ RCT_EXPORT_METHOD(stopObservingEvents) {
     [instance removeEventObserver:self];
 }
 
-RCT_EXPORT_METHOD(loginUser: (NSString *)jwt resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(loginUser: (NSString *)jwt
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         Zendesk *instance = [Zendesk instance];
@@ -118,7 +122,7 @@ RCT_EXPORT_METHOD(logoutUser: resolver:(RCTPromiseResolveBlock)resolve rejecter:
         Zendesk *instance = [Zendesk instance];
         [instance logoutUserWithCompletionHandler:^(NSError * _Nullable error) {
             if (error != nil) {
-                NSLog(@"Zendesk can't login.\nError: %@", error.localizedDescription);
+                NSLog(@"Zendesk can't logout.\nError: %@", error.localizedDescription);
                 reject(@(error.code).stringValue, error.localizedDescription, error);
                 return;
             }
@@ -160,6 +164,27 @@ RCT_EXPORT_METHOD(getUnreadMessageCount:
         // Get the unread count
         NSNumber *unreadCount = @(instance.messaging.getUnreadMessageCount);
         resolve(unreadCount);
+    });
+}
+
+RCT_EXPORT_METHOD(sendPageViewEvent:(NSString *)pageTitle
+                  withUrl:(NSString *)url
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        Zendesk *instance = [Zendesk instance];
+        // Create a PageView
+        ZDKPageView *pageView = [[ZDKPageView alloc] initWithPageTitle:pageTitle url:url];
+        [instance sendPageViewEvent:pageView completionHandler:^(NSError *error) {
+            if (error != nil) {
+                NSLog(@"Zendesk can't send PageView event.\nError: %@", error.localizedDescription);
+                reject(@(error.code).stringValue, error.localizedDescription, error);
+                return;
+            }
+            // event sent successfully
+            resolve(@(YES));
+        }];
     });
 }
 
