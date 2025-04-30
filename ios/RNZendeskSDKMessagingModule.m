@@ -11,8 +11,9 @@
 #import <React/RCTUtils.h>
 #import <React/RCTConvert.h>
 
-#import <ZendeskSDKMessaging/ZendeskSDKMessaging.h>
 #import <ZendeskSDK/ZendeskSDK.h>
+#import <ZendeskSDKMessaging/ZendeskSDKMessaging.h>
+#import <ZendeskSDKLogger/ZendeskSDKLogger.h>
 
 @interface RNZendeskSDKMessagingModule ()
 @end
@@ -75,6 +76,12 @@ RCT_EXPORT_METHOD(invalidate:(BOOL)clearStorage)
   dispatch_async(dispatch_get_main_queue(), ^{
       [Zendesk invalidateWithClearStorage:clearStorage];
   });
+}
+
+RCT_EXPORT_METHOD(setLogLevel:(BOOL)enable location:(NSInteger)logLevel)
+{
+    ZDKLogger.enabled = enable;
+    ZDKLogger.level = logLevel;
 }
 
 @end
