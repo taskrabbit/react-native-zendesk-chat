@@ -57,6 +57,19 @@ RCT_EXPORT_METHOD(hideMessaging)
   });
 }
 
+RCT_EXPORT_METHOD(getUnreadMessageCount:
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Get the instance of messaging
+        Zendesk *instance = [Zendesk instance];
+        // Get the unread count
+        NSNumber *unreadCount = @(instance.messaging.getUnreadMessageCount);
+        resolve(unreadCount);
+    });
+}
+
 RCT_EXPORT_METHOD(invalidate:(BOOL)clearStorage)
 {
   dispatch_async(dispatch_get_main_queue(), ^{
