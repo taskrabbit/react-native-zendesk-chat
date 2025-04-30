@@ -46,8 +46,6 @@ RCT_EXPORT_MODULE(RNZendeskSDKMessagingModule);
     return SUPPORTED_EVENTS;
 }
 
-
-
 RCT_EXPORT_METHOD(initialize: (NSString *)channelKey resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [Zendesk initializeWithChannelKey:channelKey messagingFactory:[[ZDKDefaultMessagingFactory alloc] init] completionHandler:^(Zendesk * _Nullable zendesk, NSError * _Nullable error) {
@@ -60,7 +58,6 @@ RCT_EXPORT_METHOD(initialize: (NSString *)channelKey resolver:(RCTPromiseResolve
         }];
     });
 }
-
 
 RCT_EXPORT_METHOD(startObservingEvents) {
     // Get your Zendesk instance:
@@ -91,13 +88,44 @@ RCT_EXPORT_METHOD(startObservingEvents) {
     }];
 }
 
-
 RCT_EXPORT_METHOD(stopObservingEvents) {
     // Get your Zendesk instance:
     Zendesk *instance = [Zendesk instance];
     
     // To remove an event observer from your Zendesk instance:
     [instance removeEventObserver:self];
+}
+
+RCT_EXPORT_METHOD(loginUser: (NSString *)jwt resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        Zendesk *instance = [Zendesk instance];
+        [instance loginUserWith:@"your_jwt_here" completionHandler:^(ZDKZendeskUser * _Nullable user, NSError * _Nullable error) {
+            if (error != nil) {
+                NSLog(@"Zendesk can't login.\nError: %@", error.localizedDescription);
+                reject(@(error.code).stringValue, error.localizedDescription, error);
+                return;
+            }
+            // login successful
+            resolve(user);
+        }];
+    });
+}
+
+RCT_EXPORT_METHOD(logoutUser: resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        Zendesk *instance = [Zendesk instance];
+        [instance logoutUserWithCompletionHandler:^(NSError * _Nullable error) {
+            if (error != nil) {
+                NSLog(@"Zendesk can't login.\nError: %@", error.localizedDescription);
+                reject(@(error.code).stringValue, error.localizedDescription, error);
+                return;
+            }
+            // logout successful
+            resolve(@(YES));
+        }];
+    });
 }
 
 RCT_EXPORT_METHOD(showMessaging) {
