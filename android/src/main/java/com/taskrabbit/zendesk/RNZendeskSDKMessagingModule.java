@@ -62,4 +62,9 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 			}
 		}
 	}
+
+	@ReactMethod
+	public void getUnreadMessageCount(Promise promise) {
+		promise.resolve(Zendesk.getInstance().getMessaging().getUnreadMessageCount());
+	}
 }
