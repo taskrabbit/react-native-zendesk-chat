@@ -195,7 +195,7 @@ RCT_EXPORT_METHOD(invalidate:(BOOL)clearStorage)
   });
 }
 
-RCT_EXPORT_METHOD(setLogLevel:(BOOL)enable location:(NSInteger)logLevel)
+RCT_EXPORT_METHOD(setLoggable:(BOOL)enable location:(NSInteger)logLevel)
 {
     ZDKLogger.enabled = enable;
     ZDKLogger.level = logLevel;

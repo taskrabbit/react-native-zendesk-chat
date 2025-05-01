@@ -14,6 +14,7 @@ import java.lang.String;
 
 import zendesk.android.Zendesk;
 import zendesk.messaging.android.DefaultMessagingFactory;
+import zendesk.logger.Logger;
 
 public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 		private static final String TAG = "[RNZendeskSDKMessagingModule]";
@@ -66,5 +67,10 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 	@ReactMethod
 	public void getUnreadMessageCount(Promise promise) {
 		promise.resolve(Zendesk.getInstance().getMessaging().getUnreadMessageCount());
+	}
+
+	@ReactMethod
+	public void setLoggable(Boolean enable, Integer logLevel) {
+		Logger.setLoggable(enable);
 	}
 }
