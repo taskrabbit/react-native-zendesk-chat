@@ -21,9 +21,9 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 		private ReactContext reactContext;
 
     public RNZendeskSDKMessagingModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-        this.reactContext = reactContext;
-				this.applicationContext = (Application) reactContext.getApplicationContext();
+			super(reactContext);
+			this.reactContext = reactContext;
+			this.applicationContext = (Application) reactContext.getApplicationContext();
     }
 
     @Override
@@ -54,10 +54,10 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void hideMessaging() {
-		Activity activity = getCurrentActivity();
+		Activity activity = reactContext.getCurrentActivity();
 		if (activity != null) {
-			String activityName = activity.getClass().getSimpleName();
-			if (activityName.equals("MessagingActivity")) {
+			String activityName = activity.getClass().getName();
+			if (activityName.equals("zendesk.messaging.android.Messaging")) {
 				activity.finish();
 			}
 		}
