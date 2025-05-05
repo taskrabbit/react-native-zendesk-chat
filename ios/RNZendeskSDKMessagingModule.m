@@ -116,7 +116,7 @@ RCT_EXPORT_METHOD(loginUser: (NSString *)jwt
     });
 }
 
-RCT_EXPORT_METHOD(logoutUser: resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(logoutUser: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         Zendesk *instance = [Zendesk instance];
@@ -154,9 +154,7 @@ RCT_EXPORT_METHOD(hideMessaging)
   });
 }
 
-RCT_EXPORT_METHOD(getUnreadMessageCount:
-                 resolver:(RCTPromiseResolveBlock)resolve
-                 rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(getUnreadMessageCount:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         // Get the instance of messaging
