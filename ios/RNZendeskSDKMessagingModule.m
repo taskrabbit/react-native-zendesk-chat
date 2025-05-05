@@ -138,6 +138,11 @@ RCT_EXPORT_METHOD(showMessaging) {
         UIViewController *messagingViewController = [Zendesk.instance.messaging messagingViewController];
         
         if (rootViewController != nil && messagingViewController != nil) {
+            if ([rootViewController isMemberOfClass: [messagingViewController class]]) {
+                // exit early if the ZenDesk chat is already presented
+                return;
+            }
+            
             [rootViewController showViewController:messagingViewController sender:self];
         }
     });
@@ -146,10 +151,14 @@ RCT_EXPORT_METHOD(showMessaging) {
 RCT_EXPORT_METHOD(hideMessaging)
 {
   dispatch_async(dispatch_get_main_queue(), ^{
+      UIViewController *presentedViewController = RCTPresentedViewController();
       UIViewController *messagingViewController = [Zendesk.instance.messaging messagingViewController];
-      
-      if (messagingViewController != nil && messagingViewController.isBeingPresented) {
-          [messagingViewController dismissViewControllerAnimated:YES completion:nil];
+
+      if (presentedViewController != nil &&
+          messagingViewController != nil &&
+          [presentedViewController isMemberOfClass: [messagingViewController class]]) {
+          // dismiss only if the presented view controller is the ZenDesk chat modal
+          [presentedViewController dismissViewControllerAnimated:YES completion:nil];
       }
   });
 }
