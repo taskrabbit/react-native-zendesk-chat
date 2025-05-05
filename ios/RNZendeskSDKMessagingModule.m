@@ -104,7 +104,7 @@ RCT_EXPORT_METHOD(loginUser: (NSString *)jwt
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         Zendesk *instance = [Zendesk instance];
-        [instance loginUserWith:@"your_jwt_here" completionHandler:^(ZDKZendeskUser * _Nullable user, NSError * _Nullable error) {
+        [instance loginUserWith:jwt completionHandler:^(ZDKZendeskUser * _Nullable user, NSError * _Nullable error) {
             if (error != nil) {
                 NSLog(@"Zendesk can't login.\nError: %@", error.localizedDescription);
                 reject(@(error.code).stringValue, error.localizedDescription, error);
