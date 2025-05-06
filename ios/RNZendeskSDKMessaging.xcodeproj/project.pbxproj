@@ -44,9 +44,9 @@
 		B6462EB61C603E340010294B = {
 			isa = PBXGroup;
 			children = (
+				B6462EC01C603E340010294B /* Products */,
 				178A583E2DCA2732002CBFA1 /* RNZendeskSDKMessagingModule.swift */,
 				B6462ECC1C603E5C0010294B /* RNZendeskSDKMessagingModule.m */,
-				B6462EC01C603E340010294B /* Products */,
 				178A583D2DCA2732002CBFA1 /* RNZendeskSDKMessaging-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
