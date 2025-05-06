@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		178A583F2DCA2732002CBFA1 /* RNZendeskSDKMessagingModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178A583E2DCA2732002CBFA1 /* RNZendeskSDKMessagingModule.swift */; };
 		B6462ECD1C603E5C0010294B /* RNZendeskSDKMessagingModule.m in Sources */ = {isa = PBXBuildFile; fileRef = B6462ECC1C603E5C0010294B /* RNZendeskSDKMessagingModule.m */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		178A583D2DCA2732002CBFA1 /* RNZendeskSDKMessaging-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNZendeskSDKMessaging-Bridging-Header.h"; sourceTree = "<group>"; };
+		178A583E2DCA2732002CBFA1 /* RNZendeskSDKMessagingModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNZendeskSDKMessagingModule.swift; sourceTree = "<group>"; };
 		B6462EBF1C603E340010294B /* libRNZendeskSDKMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNZendeskSDKMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6462ECB1C603E5C0010294B /* RNZendeskSDKMessagingModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNZendeskSDKMessagingModule.h; sourceTree = "<group>"; };
 		B6462ECC1C603E5C0010294B /* RNZendeskSDKMessagingModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNZendeskSDKMessagingModule.m; sourceTree = "<group>"; };
@@ -42,9 +45,11 @@
 		B6462EB61C603E340010294B = {
 			isa = PBXGroup;
 			children = (
+				178A583E2DCA2732002CBFA1 /* RNZendeskSDKMessagingModule.swift */,
 				B6462ECB1C603E5C0010294B /* RNZendeskSDKMessagingModule.h */,
 				B6462ECC1C603E5C0010294B /* RNZendeskSDKMessagingModule.m */,
 				B6462EC01C603E340010294B /* Products */,
+				178A583D2DCA2732002CBFA1 /* RNZendeskSDKMessaging-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,6 +92,7 @@
 				TargetAttributes = {
 					B6462EBE1C603E340010294B = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 1620;
 					};
 				};
 			};
@@ -113,6 +119,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				178A583F2DCA2732002CBFA1 /* RNZendeskSDKMessagingModule.swift in Sources */,
 				B6462ECD1C603E5C0010294B /* RNZendeskSDKMessagingModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,6 +210,7 @@
 		B6462EC91C603E340010294B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../../React/**",
@@ -212,12 +220,16 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNZendeskSDKMessaging-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
 		B6462ECA1C603E340010294B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../../../React/**",
@@ -227,6 +239,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNZendeskSDKMessaging-Bridging-Header.h";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
