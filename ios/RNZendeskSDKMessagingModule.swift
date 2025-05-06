@@ -7,3 +7,9 @@
 //
 
 import Foundation
+import React
+
+@objc(RNZendeskSDKMessagingModule)
+class RNZendeskSDKMessagingModule: NSObject {
+
+}
