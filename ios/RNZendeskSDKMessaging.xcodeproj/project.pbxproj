@@ -27,7 +27,6 @@
 		178A583D2DCA2732002CBFA1 /* RNZendeskSDKMessaging-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNZendeskSDKMessaging-Bridging-Header.h"; sourceTree = "<group>"; };
 		178A583E2DCA2732002CBFA1 /* RNZendeskSDKMessagingModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNZendeskSDKMessagingModule.swift; sourceTree = "<group>"; };
 		B6462EBF1C603E340010294B /* libRNZendeskSDKMessaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNZendeskSDKMessaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B6462ECB1C603E5C0010294B /* RNZendeskSDKMessagingModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNZendeskSDKMessagingModule.h; sourceTree = "<group>"; };
 		B6462ECC1C603E5C0010294B /* RNZendeskSDKMessagingModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNZendeskSDKMessagingModule.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -46,7 +45,6 @@
 			isa = PBXGroup;
 			children = (
 				178A583E2DCA2732002CBFA1 /* RNZendeskSDKMessagingModule.swift */,
-				B6462ECB1C603E5C0010294B /* RNZendeskSDKMessagingModule.h */,
 				B6462ECC1C603E5C0010294B /* RNZendeskSDKMessagingModule.m */,
 				B6462EC01C603E340010294B /* Products */,
 				178A583D2DCA2732002CBFA1 /* RNZendeskSDKMessaging-Bridging-Header.h */,
