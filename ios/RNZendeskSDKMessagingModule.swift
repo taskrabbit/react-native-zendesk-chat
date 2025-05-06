@@ -168,22 +168,34 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
                     self.sendEvent(withName: "ZDKZendeskEventSendMessageFailed", body: error)
                 case .conversationOpened(id: let id, timestamp: let timestamp, conversationId: let conversationId):
                     self.sendEvent(withName: "ZDKZendeskEventConversationOpened", body: [
-                        "id": id,
-                        "timestamp": timestamp,
+                        "id": id.uuidString,
+                        "timestamp": String(timestamp.timeIntervalSince1970),
                         "conversationId": conversationId ?? ""
                     ])
                 case .conversationStarted(id: let id, timestamp: let timestamp, conversationId: let conversationId):
                     self.sendEvent(withName: "ZDKZendeskEventConversationStarted", body: [
-                        "id": id,
-                        "timestamp": timestamp,
+                        "id": id.uuidString,
+                        "timestamp": String(timestamp.timeIntervalSince1970),
                         "conversationId": conversationId
                     ])
                 case .messagesShown(id: let id, timestamp: let timestamp, conversationId: let conversationId, messages: let messages):
                     self.sendEvent(withName: "ZDKZendeskEventMessagesShown", body: [
-                        "id": id,
-                        "timestamp": timestamp,
+                        "id": id.uuidString,
+                        "timestamp": String(timestamp.timeIntervalSince1970),
                         "conversationId": conversationId,
-                        "messages": messages
+                        "messages": messages.map {
+                            var role = ""
+                            switch $0.role {
+                            case .business:
+                                role = "business"
+                            case .user:
+                                role = "user"
+                            @unknown default:
+                                role = "unknown"
+                            }
+                            
+                            return ["id": $0.id, "role": role, "timestamp": String($0.timestamp.timeIntervalSince1970)]
+                        }
                     ])
                 @unknown default:
                     break
