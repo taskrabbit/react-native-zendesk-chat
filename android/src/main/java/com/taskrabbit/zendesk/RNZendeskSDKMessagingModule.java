@@ -5,12 +5,15 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.lang.String;
 
@@ -20,6 +23,8 @@ import zendesk.android.FailureCallback;
 import zendesk.android.SuccessCallback;
 import zendesk.android.Zendesk;
 import zendesk.android.ZendeskUser;
+import zendesk.android.events.ZendeskEvent;
+import zendesk.android.events.ZendeskEventListener;
 import zendesk.messaging.android.DefaultMessagingFactory;
 import zendesk.logger.Logger;
 
@@ -27,6 +32,15 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 	private static final String TAG = "[RNZendeskSDKMessagingModule]";
 	private Application applicationContext;
 	private ReactContext reactContext;
+	private ZendeskEventListener zendeskEventListener;
+
+	private void sendEvent(ReactContext reactContext,
+												 String eventName,
+												 Object params) {
+		reactContext
+			.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+			.emit(eventName, params);
+	}
 
 	public RNZendeskSDKMessagingModule(ReactApplicationContext reactContext) {
 		super(reactContext);
@@ -106,6 +120,47 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 	@ReactMethod
 	public void getUnreadMessageCount(Promise promise) {
 		promise.resolve(Zendesk.getInstance().getMessaging().getUnreadMessageCount());
+	}
+
+	@ReactMethod
+	public void startObservingEvents() {
+		if (this.zendeskEventListener != null) {
+			return;
+		}
+
+		this.zendeskEventListener = new ZendeskEventListener() {
+				@Override
+				public void onEvent(@NonNull ZendeskEvent zendeskEvent) {
+					if (zendeskEvent instanceof ZendeskEvent.UnreadMessageCountChanged) {
+						 sendEvent(reactContext, "ZDKZendeskEventUnreadMessageCountChanged",zendeskEvent );
+					} else if (zendeskEvent instanceof ZendeskEvent.AuthenticationFailed) {
+						sendEvent(reactContext, "ZDKZendeskEventAuthenticationFailed", zendeskEvent );
+					} else if (zendeskEvent instanceof ZendeskEvent.ConversationAdded) {
+						sendEvent(reactContext, "ZDKZendeskEventConversationAdded", zendeskEvent );
+					} else if (zendeskEvent instanceof ZendeskEvent.ConnectionStatusChanged) {
+						sendEvent(reactContext, "ZDKZendeskEventConnectionStatusChanged", zendeskEvent );
+					} else if (zendeskEvent instanceof ZendeskEvent.SendMessageFailed) {
+						sendEvent(reactContext, "ZDKZendeskEventSendMessageFailed", zendeskEvent );
+					} else if (zendeskEvent instanceof ZendeskEvent.ConversationOpened) {
+						sendEvent(reactContext, "ZDKZendeskEventConversationOpened", zendeskEvent );
+					} else if (zendeskEvent instanceof ZendeskEvent.ConversationStarted) {
+						sendEvent(reactContext, "ZDKZendeskEventConversationStarted",zendeskEvent );
+					} else if (zendeskEvent instanceof ZendeskEvent.MessagesShown) {
+						sendEvent(reactContext, "ZDKZendeskEventMessagesShown", zendeskEvent );
+					} else if (zendeskEvent instanceof ZendeskEvent.FieldValidationFailed) {
+						sendEvent(reactContext, "ZDKZendeskEventFieldValidationFailed", zendeskEvent );
+					}
+				}
+		};
+
+		Zendesk.getInstance().addEventListener(this.zendeskEventListener);
+	}
+
+	@ReactMethod
+	public void stopObservingEvents() {
+		if (this.zendeskEventListener != null) {
+			Zendesk.getInstance().removeEventListener(this.zendeskEventListener);
+		}
 	}
 
 	@ReactMethod
