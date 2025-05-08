@@ -5,8 +5,8 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -16,7 +16,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.lang.String;
-
 
 import kotlin.Unit;
 import zendesk.android.FailureCallback;
@@ -75,7 +74,11 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 			new SuccessCallback<ZendeskUser>() {
 				@Override
 				public void onSuccess(ZendeskUser user) {
-					promise.resolve(user);
+					WritableMap userMap = Arguments.createMap();
+					userMap.putString("id", user.getId());
+					userMap.putString("externalId", user.getExternalId());
+
+					promise.resolve(userMap);
 				}},
 			new FailureCallback<Throwable>() {
 				@Override
@@ -91,7 +94,7 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 			new SuccessCallback<Unit>() {
 				@Override
 				public void onSuccess(Unit value) {
-					promise.resolve(value);
+					promise.resolve(true);
 				}},
 			new FailureCallback<Throwable>() {
 				@Override
@@ -103,12 +106,20 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void showMessaging() {
-		Zendesk.getInstance().getMessaging().showMessaging(reactContext);
+		Activity activity = this.reactContext.getCurrentActivity();
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Zendesk.getInstance().getMessaging().showMessaging(activity);
+				}
+			});
+		}
 	}
 
 	@ReactMethod
 	public void hideMessaging() {
-		Activity activity = reactContext.getCurrentActivity();
+		Activity activity = this.reactContext.getCurrentActivity();
 		if (activity != null) {
 			String activityName = activity.getClass().getName();
 			if (activityName.equals("zendesk.messaging.android.Messaging")) {
