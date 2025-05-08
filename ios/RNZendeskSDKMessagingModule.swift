@@ -157,13 +157,13 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
             Zendesk.instance?.addEventObserver(self) { event in
                 switch event {
                 case .unreadMessageCountChanged(let unreadCount):
-                    self.sendEvent(withName: "ZDKZendeskEventUnreadMessageCountChanged", body: unreadCount)
+                    self.sendEvent(withName: "ZDKZendeskEventUnreadMessageCountChanged", body: ["unreadCount": unreadCount])
                 case .authenticationFailed(let error as NSError):
                     self.sendEvent(withName: "ZDKZendeskEventAuthenticationFailed", body: error)
                 case .conversationAdded(conversationId: let conversationId):
-                    self.sendEvent(withName: "ZDKZendeskEventConversationAdded", body: conversationId)
+                    self.sendEvent(withName: "ZDKZendeskEventConversationAdded", body: ["conversationId": conversationId])
                 case .connectionStatusChanged(connectionStatus: let connectionStatus):
-                    self.sendEvent(withName: "ZDKZendeskEventConnectionStatusChanged", body: connectionStatus)
+                    self.sendEvent(withName: "ZDKZendeskEventConnectionStatusChanged", body: ["connectionStatus": connectionStatus])
                 case .sendMessageFailed(let error as NSError):
                     self.sendEvent(withName: "ZDKZendeskEventSendMessageFailed", body: error)
                 case .conversationOpened(id: let id, timestamp: let timestamp, conversationId: let conversationId):
@@ -187,11 +187,11 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
                             var role = ""
                             switch $0.role {
                             case .business:
-                                role = "business"
+                                role = "BUSINESS"
                             case .user:
-                                role = "user"
+                                role = "USER"
                             @unknown default:
-                                role = "unknown"
+                                role = "UNKNOWN"
                             }
                             
                             return ["id": $0.id, "role": role, "timestamp": String($0.timestamp.timeIntervalSince1970)]
