@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -142,22 +143,44 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 		this.zendeskEventListener = new ZendeskEventListener() {
 				@Override
 				public void onEvent(@NonNull ZendeskEvent zendeskEvent) {
+					WritableMap eventMap = Arguments.createMap();
 					if (zendeskEvent instanceof ZendeskEvent.UnreadMessageCountChanged) {
-						 sendEvent(reactContext, "ZDKZendeskEventUnreadMessageCountChanged",zendeskEvent );
+						eventMap.putInt("unreadCount", ((ZendeskEvent.UnreadMessageCountChanged) zendeskEvent).getCurrentUnreadCount());
+						sendEvent(reactContext, "ZDKZendeskEventUnreadMessageCountChanged", eventMap);
 					} else if (zendeskEvent instanceof ZendeskEvent.AuthenticationFailed) {
 						sendEvent(reactContext, "ZDKZendeskEventAuthenticationFailed", zendeskEvent );
 					} else if (zendeskEvent instanceof ZendeskEvent.ConversationAdded) {
-						sendEvent(reactContext, "ZDKZendeskEventConversationAdded", zendeskEvent );
+						eventMap.putString("conversationId", ((ZendeskEvent.ConversationAdded) zendeskEvent).getConversationId());
+						sendEvent(reactContext, "ZDKZendeskEventConversationAdded", eventMap);
 					} else if (zendeskEvent instanceof ZendeskEvent.ConnectionStatusChanged) {
-						sendEvent(reactContext, "ZDKZendeskEventConnectionStatusChanged", zendeskEvent );
+						eventMap.putString("connectionStatus",((ZendeskEvent.ConnectionStatusChanged) zendeskEvent).getConnectionStatus().toString());
+						sendEvent(reactContext, "ZDKZendeskEventConnectionStatusChanged", eventMap);
 					} else if (zendeskEvent instanceof ZendeskEvent.SendMessageFailed) {
 						sendEvent(reactContext, "ZDKZendeskEventSendMessageFailed", zendeskEvent );
 					} else if (zendeskEvent instanceof ZendeskEvent.ConversationOpened) {
-						sendEvent(reactContext, "ZDKZendeskEventConversationOpened", zendeskEvent );
+						eventMap.putString("id", ((ZendeskEvent.ConversationOpened) zendeskEvent).getId());
+						eventMap.putString("timestamp",String.valueOf(((ZendeskEvent.ConversationOpened) zendeskEvent).getTimestamp()));
+						eventMap.putString("conversationId",((ZendeskEvent.ConversationOpened) zendeskEvent).getConversationId());
+						sendEvent(reactContext, "ZDKZendeskEventConversationOpened", eventMap );
 					} else if (zendeskEvent instanceof ZendeskEvent.ConversationStarted) {
-						sendEvent(reactContext, "ZDKZendeskEventConversationStarted",zendeskEvent );
+						eventMap.putString("id", ((ZendeskEvent.ConversationStarted) zendeskEvent).getId());
+						eventMap.putString("timestamp",String.valueOf(((ZendeskEvent.ConversationStarted) zendeskEvent).getTimestamp()));
+						eventMap.putString("conversationId",((ZendeskEvent.ConversationStarted) zendeskEvent).getConversationId());
+						sendEvent(reactContext, "ZDKZendeskEventConversationStarted", eventMap );
 					} else if (zendeskEvent instanceof ZendeskEvent.MessagesShown) {
-						sendEvent(reactContext, "ZDKZendeskEventMessagesShown", zendeskEvent );
+						eventMap.putString("id", ((ZendeskEvent.MessagesShown) zendeskEvent).getId());
+						eventMap.putString("timestamp",String.valueOf(((ZendeskEvent.MessagesShown) zendeskEvent).getTimestamp()));
+						eventMap.putString("conversationId",((ZendeskEvent.MessagesShown) zendeskEvent).getConversationId());
+						WritableArray messageArray = Arguments.createArray();
+						((ZendeskEvent.MessagesShown) zendeskEvent).getMessages().forEach(message -> {
+							WritableMap messageMap = Arguments.createMap();
+							messageMap.putString("id", message.getId());
+							messageMap.putString("role", message.getRole().toString());
+							messageMap.putString("timestamp", String.valueOf(message.getTimestamp()));
+							messageArray.pushMap(messageMap);
+						});
+						eventMap.putArray("messages", messageArray);
+						sendEvent(reactContext, "ZDKZendeskEventMessagesShown", eventMap );
 					} else if (zendeskEvent instanceof ZendeskEvent.FieldValidationFailed) {
 						sendEvent(reactContext, "ZDKZendeskEventFieldValidationFailed", zendeskEvent );
 					}
