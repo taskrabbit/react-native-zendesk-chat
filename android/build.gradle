@@ -1,5 +1,3 @@
-apply plugin: 'com.android.library'
-
 import groovy.json.JsonSlurper
 
 def safeExtGet(prop, fallback) {
@@ -11,6 +9,17 @@ def getModuleVersion() {
     def parsedJson = new JsonSlurper().parseText(jsonFile.text)
 
     return parsedJson["version"]
+}
+
+def isNewArchitectureEnabled() {
+  return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+if (isNewArchitectureEnabled()) {
+  apply plugin: "com.facebook.react"
 }
 
 android {
