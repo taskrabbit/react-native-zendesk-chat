@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "React Native Wrapper around Zopim Zendesk Chat",
 	"main": "index.js",
-	"types": "RNZendeskChat.d.ts",
+	"types": "RNZendeskSDKMessaging.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/taskrabbit/react-native-zendesk-chat"
