@@ -27,6 +27,7 @@ import zendesk.android.events.ZendeskEvent;
 import zendesk.android.events.ZendeskEventListener;
 import zendesk.messaging.android.DefaultMessagingFactory;
 import zendesk.logger.Logger;
+import zendesk.messaging.android.internal.messagingscreen.MessagingActivity;
 
 public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 	private static final String TAG = "[RNZendeskSDKMessagingModule]";
@@ -46,6 +47,8 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 		super(reactContext);
 		this.reactContext = reactContext;
 		this.applicationContext = (Application) reactContext.getApplicationContext();
+
+		this.applicationContext.registerActivityLifecycleCallbacks(new RNZendeskActivityTracker());
 	}
 
 	@Override
@@ -120,12 +123,9 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void hideMessaging() {
-		Activity activity = this.reactContext.getCurrentActivity();
-		if (activity != null) {
-			String activityName = activity.getClass().getName();
-			if (activityName.equals("zendesk.messaging.android.Messaging")) {
+		Activity activity = RNZendeskActivityTracker.getCurrentActivity();
+		if (activity instanceof MessagingActivity) {
 				activity.finish();
-			}
 		}
 	}
 
