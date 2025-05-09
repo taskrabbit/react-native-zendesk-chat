@@ -125,7 +125,12 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 	public void hideMessaging() {
 		Activity activity = RNZendeskActivityTracker.getCurrentActivity();
 		if (activity instanceof MessagingActivity) {
-				activity.finish();
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					activity.finish();
+				}
+			});
 		}
 	}
 
@@ -148,7 +153,8 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 						eventMap.putInt("unreadCount", ((ZendeskEvent.UnreadMessageCountChanged) zendeskEvent).getCurrentUnreadCount());
 						sendEvent(reactContext, "ZDKZendeskEventUnreadMessageCountChanged", eventMap);
 					} else if (zendeskEvent instanceof ZendeskEvent.AuthenticationFailed) {
-						sendEvent(reactContext, "ZDKZendeskEventAuthenticationFailed", zendeskEvent );
+						eventMap.putString("error", zendeskEvent.toString());
+						sendEvent(reactContext, "ZDKZendeskEventAuthenticationFailed", eventMap);
 					} else if (zendeskEvent instanceof ZendeskEvent.ConversationAdded) {
 						eventMap.putString("conversationId", ((ZendeskEvent.ConversationAdded) zendeskEvent).getConversationId());
 						sendEvent(reactContext, "ZDKZendeskEventConversationAdded", eventMap);
@@ -156,7 +162,8 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 						eventMap.putString("connectionStatus",((ZendeskEvent.ConnectionStatusChanged) zendeskEvent).getConnectionStatus().toString());
 						sendEvent(reactContext, "ZDKZendeskEventConnectionStatusChanged", eventMap);
 					} else if (zendeskEvent instanceof ZendeskEvent.SendMessageFailed) {
-						sendEvent(reactContext, "ZDKZendeskEventSendMessageFailed", zendeskEvent );
+						eventMap.putString("error", zendeskEvent.toString());
+						sendEvent(reactContext, "ZDKZendeskEventSendMessageFailed", eventMap );
 					} else if (zendeskEvent instanceof ZendeskEvent.ConversationOpened) {
 						eventMap.putString("id", ((ZendeskEvent.ConversationOpened) zendeskEvent).getId());
 						eventMap.putString("timestamp",String.valueOf(((ZendeskEvent.ConversationOpened) zendeskEvent).getTimestamp()));
@@ -182,7 +189,8 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 						eventMap.putArray("messages", messageArray);
 						sendEvent(reactContext, "ZDKZendeskEventMessagesShown", eventMap );
 					} else if (zendeskEvent instanceof ZendeskEvent.FieldValidationFailed) {
-						sendEvent(reactContext, "ZDKZendeskEventFieldValidationFailed", zendeskEvent );
+						eventMap.putString("error", zendeskEvent.toString());
+						sendEvent(reactContext, "ZDKZendeskEventFieldValidationFailed", eventMap );
 					}
 				}
 		};

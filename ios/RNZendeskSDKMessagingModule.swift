@@ -159,13 +159,13 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
                 case .unreadMessageCountChanged(let unreadCount):
                     self.sendEvent(withName: "ZDKZendeskEventUnreadMessageCountChanged", body: ["unreadCount": unreadCount])
                 case .authenticationFailed(let error as NSError):
-                    self.sendEvent(withName: "ZDKZendeskEventAuthenticationFailed", body: error)
+                    self.sendEvent(withName: "ZDKZendeskEventAuthenticationFailed", body: ["error": error.localizedDescription])
                 case .conversationAdded(conversationId: let conversationId):
                     self.sendEvent(withName: "ZDKZendeskEventConversationAdded", body: ["conversationId": conversationId])
                 case .connectionStatusChanged(connectionStatus: let connectionStatus):
                     self.sendEvent(withName: "ZDKZendeskEventConnectionStatusChanged", body: ["connectionStatus": connectionStatus])
                 case .sendMessageFailed(let error as NSError):
-                    self.sendEvent(withName: "ZDKZendeskEventSendMessageFailed", body: error)
+                    self.sendEvent(withName: "ZDKZendeskEventSendMessageFailed", body: ["error": error.localizedDescription])
                 case .conversationOpened(id: let id, timestamp: let timestamp, conversationId: let conversationId):
                     self.sendEvent(withName: "ZDKZendeskEventConversationOpened", body: [
                         "id": id.uuidString,
