@@ -63,7 +63,7 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
             Zendesk.instance?.loginUser(with: jwt) { result in
                 switch result {
                 case .success(let user):
-                    resolve(user)
+                    resolve(["id": user.id, "externalId": user.externalId])
                 case .failure(let error):
                     reject("LOGIN_ERROR", error.localizedDescription, error)
                 }
