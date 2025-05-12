@@ -206,6 +206,11 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 	}
 
 	@ReactMethod
+	public void invalidate(Boolean clearStorage) {
+			Zendesk.invalidate();
+	}
+
+	@ReactMethod
 	public void setLoggable(Boolean enable, Integer logLevel) {
 		Logger.setLoggable(enable);
 	}
