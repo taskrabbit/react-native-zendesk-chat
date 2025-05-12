@@ -25,6 +25,7 @@ import zendesk.android.Zendesk;
 import zendesk.android.ZendeskUser;
 import zendesk.android.events.ZendeskEvent;
 import zendesk.android.events.ZendeskEventListener;
+import zendesk.android.pageviewevents.PageView;
 import zendesk.messaging.android.DefaultMessagingFactory;
 import zendesk.logger.Logger;
 import zendesk.messaging.android.internal.messagingscreen.MessagingActivity;
@@ -137,6 +138,25 @@ public class RNZendeskSDKMessagingModule extends ReactContextBaseJavaModule {
 	@ReactMethod
 	public void getUnreadMessageCount(Promise promise) {
 		promise.resolve(Zendesk.getInstance().getMessaging().getUnreadMessageCount());
+	}
+
+	@ReactMethod
+	public void sendPageViewEvent(String pageTitle, String url, Promise promise) {
+		PageView pageView = new PageView(url, pageTitle);
+		Zendesk.getInstance().sendPageView(pageView,
+			new SuccessCallback<Unit>() {
+				@Override
+				public void onSuccess(Unit value) {
+					promise.resolve(true);
+				}
+			},
+			new FailureCallback<Throwable>() {
+				@Override
+				public void onFailure(@NonNull Throwable error) {
+					Log.e(TAG, "Send page event failed", error);
+					promise.reject("PAGEVIEW_ERROR", error.getLocalizedMessage(), error);
+				}
+			});
 	}
 
 	@ReactMethod
