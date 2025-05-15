@@ -163,7 +163,7 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
                 case .conversationAdded(conversationId: let conversationId):
                     self.sendEvent(withName: "ZDKZendeskEventConversationAdded", body: ["conversationId": conversationId])
                 case .connectionStatusChanged(connectionStatus: let connectionStatus):
-                    self.sendEvent(withName: "ZDKZendeskEventConnectionStatusChanged", body: ["connectionStatus": connectionStatus])
+                    self.sendEvent(withName: "ZDKZendeskEventConnectionStatusChanged", body: ["connectionStatus": connectionStatus.stringValue])
                 case .sendMessageFailed(let error as NSError):
                     self.sendEvent(withName: "ZDKZendeskEventSendMessageFailed", body: ["error": error.localizedDescription])
                 case .conversationOpened(id: let id, timestamp: let timestamp, conversationId: let conversationId):
