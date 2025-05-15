@@ -18,21 +18,21 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
 
     private let SUPPORTED_EVENTS: [String] = [
         /// Invoked when there is a change to the current total number of unread messages.
-        "ZDKZendeskEventUnreadMessageCountChanged",
+        "ZendeskEventUnreadMessageCountChanged",
         /// Invoked when a rest call fails for authentication reasons.
-        "ZDKZendeskEventAuthenticationFailed",
+        "ZendeskEventAuthenticationFailed",
         /// Invoked when a conversation has been added.
-        "ZDKZendeskEventConversationAdded",
+        "ZendeskEventConversationAdded",
         /// The SDK <code>ConnectionStatus</code> has changed due to an action or another event.
-        "ZDKZendeskEventConnectionStatusChanged",
+        "ZendeskEventConnectionStatusChanged",
         /// Invoked when a message fails to be sent.
-        "ZDKZendeskEventSendMessageFailed",
+        "ZendeskEventSendMessageFailed",
         /// Invoked when the conversation screen is opened.
-        "ZDKZendeskEventConversationOpened",
+        "ZendeskEventConversationOpened",
         /// Invoked when the conversation is started on the device.
-        "ZDKZendeskEventConversationStarted",
+        "ZendeskEventConversationStarted",
         /// Invoked when the messages shown to the user are updated.
-        "ZDKZendeskEventMessagesShown"
+        "ZendeskEventMessagesShown"
     ];
 
     override func supportedEvents() -> [String] {
@@ -157,29 +157,29 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
             Zendesk.instance?.addEventObserver(self) { event in
                 switch event {
                 case .unreadMessageCountChanged(let unreadCount):
-                    self.sendEvent(withName: "ZDKZendeskEventUnreadMessageCountChanged", body: ["unreadCount": unreadCount])
+                    self.sendEvent(withName: "ZendeskEventUnreadMessageCountChanged", body: ["unreadCount": unreadCount])
                 case .authenticationFailed(let error as NSError):
-                    self.sendEvent(withName: "ZDKZendeskEventAuthenticationFailed", body: ["error": error.localizedDescription])
+                    self.sendEvent(withName: "ZendeskEventAuthenticationFailed", body: ["error": error.localizedDescription])
                 case .conversationAdded(conversationId: let conversationId):
-                    self.sendEvent(withName: "ZDKZendeskEventConversationAdded", body: ["conversationId": conversationId])
+                    self.sendEvent(withName: "ZendeskEventConversationAdded", body: ["conversationId": conversationId])
                 case .connectionStatusChanged(connectionStatus: let connectionStatus):
-                    self.sendEvent(withName: "ZDKZendeskEventConnectionStatusChanged", body: ["connectionStatus": connectionStatus.stringValue])
+                    self.sendEvent(withName: "ZendeskEventConnectionStatusChanged", body: ["connectionStatus": connectionStatus.stringValue])
                 case .sendMessageFailed(let error as NSError):
-                    self.sendEvent(withName: "ZDKZendeskEventSendMessageFailed", body: ["error": error.localizedDescription])
+                    self.sendEvent(withName: "ZendeskEventSendMessageFailed", body: ["error": error.localizedDescription])
                 case .conversationOpened(id: let id, timestamp: let timestamp, conversationId: let conversationId):
-                    self.sendEvent(withName: "ZDKZendeskEventConversationOpened", body: [
+                    self.sendEvent(withName: "ZendeskEventConversationOpened", body: [
                         "id": id.uuidString,
                         "timestamp": String(timestamp.timeIntervalSince1970),
                         "conversationId": conversationId ?? ""
                     ])
                 case .conversationStarted(id: let id, timestamp: let timestamp, conversationId: let conversationId):
-                    self.sendEvent(withName: "ZDKZendeskEventConversationStarted", body: [
+                    self.sendEvent(withName: "ZendeskEventConversationStarted", body: [
                         "id": id.uuidString,
                         "timestamp": String(timestamp.timeIntervalSince1970),
                         "conversationId": conversationId
                     ])
                 case .messagesShown(id: let id, timestamp: let timestamp, conversationId: let conversationId, messages: let messages):
-                    self.sendEvent(withName: "ZDKZendeskEventMessagesShown", body: [
+                    self.sendEvent(withName: "ZendeskEventMessagesShown", body: [
                         "id": id.uuidString,
                         "timestamp": String(timestamp.timeIntervalSince1970),
                         "conversationId": conversationId,
