@@ -102,8 +102,10 @@ class RNZendeskSDKMessagingModule: RCTEventEmitter {
                 // exit early if the ZenDesk chat is already presented
                 return;
             }
-            
-            rootViewController.show(messagingViewController, sender:self);
+
+            // Presenting messaging modally requires to wrap the messaging controller with a nav controller
+            let wrapperNavController = UINavigationController(rootViewController: messagingViewController)
+            rootViewController.show(wrapperNavController, sender: self)
         }
     }
     
