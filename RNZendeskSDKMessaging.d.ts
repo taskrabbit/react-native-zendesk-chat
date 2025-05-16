@@ -60,7 +60,7 @@ declare module "react-native-zendesk-chat" {
 		/**
 		 * setLoggable
 		 */
-		setLoggable: (enable: boolean, level: string) => () => void;
+		setLoggable: (enable: boolean, level: number) => () => void;
 	}
 
 	export const RNZendeskSDKMessagingModule: RNZendeskSDKMessaging;
